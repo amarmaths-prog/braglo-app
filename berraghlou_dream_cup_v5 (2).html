@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>تطبيق براغلو انفو | BERRAGHLOU DREAM CUP 2026</title>
+
+ <!-- Google Fonts -->
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Rajdhani:wght@700;900&display=swap" rel="stylesheet">
+ 
+ <!-- FontAwesome -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+ <!-- Tailwind CSS -->
+ <script src="https://cdn.tailwindcss.com"></script>
+ 
+ <!-- React & Babel -->
+ <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+ <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+ <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+ 
+ <style>
+ :root {
+ --bg-dark: #030712;
+ --surface: rgba(15, 23, 42, 0.72);
+ --emerald-main: #10b981;
+ --emerald-glow: rgba(16, 185, 129, 0.45);
+ --amber-main: #f59e0b;
+ --amber-glow: rgba(245, 158, 11, 0.4);
+ --red-disq: #ef4444;
+ }
+
+ * { box-sizing: border-box; }
+
+ body {
+ background-color: var(--bg-dark);
+ background-image: 
+ radial-gradient(circle at 15% 10%, rgba(14, 165, 233, 0.12) 0%, transparent 40%),
+ radial-gradient(circle at 85% 20%, rgba(245, 158, 11, 0.10) 0%, transparent 40%),
+ radial-gradient(circle at 50% 100%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+ background-attachment: fixed;
+ color: #f8fafc;
+ font-family: 'Cairo', sans-serif;
+ overflow-x: hidden;
+ padding-bottom: 84px;
+ margin: 0;
+ }
+
+ /* Glassmorphism Cards */
+ .glass-card {
+ background: var(--surface);
+ backdrop-filter: blur(14px);
+ -webkit-backdrop-filter: blur(14px);
+ border: 1px solid rgba(255, 255, 255, 0.09);
+ box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+ border-radius: 1.25rem;
+ }
+
+ /* 3D Buttons - بارزة ثلاثية الأبعاد مع إضاءة ذهبية سفلية عند الضغط */
+ .btn-3d {
+ position: relative;
+ background: linear-gradient(180deg, #273549 0%, #131c2e 55%, #090e1a 100%);
+ border-radius: 1.1rem;
+ color: #f1f5f9;
+ border-top: 1.5px solid rgba(255, 255, 255, 0.25);
+ border-left: 1px solid rgba(148, 163, 184, 0.25);
+ border-right: 1px solid rgba(148, 163, 184, 0.25);
+ border-bottom: 5px solid #020617;
+ box-shadow:
+ 0 7px 0 #020617,
+ 0 12px 22px rgba(0, 0, 0, 0.65),
+ inset 0 2px 2px rgba(255, 255, 255, 0.18),
+ inset 0 -3px 6px rgba(0, 0, 0, 0.55);
+ transform: translateY(0);
+ transition: transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ gap: 0.45rem;
+ padding: 1rem 0.65rem;
+ font-weight: 800;
+ cursor: pointer;
+ user-select: none;
+ overflow: hidden;
+ }
+
+ .btn-3d::after {
+ content: '';
+ position: absolute;
+ bottom: 0;
+ left: 10%;
+ right: 10%;
+ height: 4px;
+ border-radius: 999px;
+ background: transparent;
+ transition: all 0.18s ease;
+ pointer-events: none;
+ }
+ 
+ .btn-3d:hover {
+ border-color: rgba(251, 191, 36, 0.6);
+ border-bottom-color: #78350f;
+ color: #fde68a;
+ transform: translateY(-3px);
+ box-shadow:
+ 0 10px 0 #020617,
+ 0 16px 28px rgba(0, 0, 0, 0.7),
+ 0 6px 18px rgba(245, 158, 11, 0.22),
+ inset 0 2px 3px rgba(255, 255, 255, 0.25);
+ }
+ 
+ .btn-3d:active {
+ transform: translateY(5px) scale(0.985);
+ border-bottom: 4px solid #f59e0b;
+ color: #fef08a;
+ background: linear-gradient(180deg, #1e293b 0%, #291d0a 100%);
+ box-shadow:
+ 0 2px 0 #92400e,
+ 0 8px 26px rgba(251, 191, 36, 0.9),
+ 0 14px 36px rgba(245, 158, 11, 0.75),
+ inset 0 -6px 14px rgba(251, 191, 36, 0.65),
+ inset 0 1px 2px rgba(255, 255, 255, 0.2);
+ }
+
+ .btn-3d:active::after,
+ .btn-3d.active-tab::after,
+ .admin-btn-3d:active::after,
+ .admin-btn-3d.active-tab::after {
+ background: linear-gradient(90deg, transparent, #fef08a, #f59e0b, #fef08a, transparent);
+ box-shadow: 0 0 14px 4px rgba(251, 191, 36, 0.95);
+ }
+
+ .btn-3d.active-tab {
+ background: linear-gradient(180deg, #334155 0%, #1e293b 65%, #451a03 100%);
+ color: #fde047;
+ border-top: 1.5px solid #fde68a;
+ border-left: 1px solid rgba(251, 191, 36, 0.65);
+ border-right: 1px solid rgba(251, 191, 36, 0.65);
+ border-bottom: 5px solid #f59e0b;
+ transform: translateY(2px);
+ box-shadow:
+ 0 5px 0 #78350f,
+ 0 10px 26px rgba(251, 191, 36, 0.75),
+ 0 16px 38px rgba(245, 158, 11, 0.5),
+ inset 0 -8px 16px rgba(251, 191, 36, 0.5),
+ inset 0 2px 2px rgba(255, 255, 255, 0.25);
+ }
+
+ .btn-3d.active-tab:hover {
+ color: #fef08a;
+ transform: translateY(0);
+ }
+
+ /* Admin Mode 3D Emerald Buttons + إضاءة ذهبية سفلية عند الضغط */
+ .admin-btn-3d {
+ position: relative;
+ background: linear-gradient(180deg, #10b981 0%, #059669 55%, #064e3b 100%) !important;
+ color: #ffffff !important;
+ border-top: 1.5px solid #a7f3d0 !important;
+ border-left: 1px solid #6ee7b7 !important;
+ border-right: 1px solid #6ee7b7 !important;
+ border-bottom: 5px solid #022c22 !important;
+ border-radius: 1.1rem;
+ box-shadow:
+ 0 7px 0 #022c22,
+ 0 12px 24px var(--emerald-glow),
+ inset 0 2px 2px rgba(255, 255, 255, 0.35),
+ inset 0 -3px 6px rgba(0, 0, 0, 0.4) !important;
+ transition: transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.16s ease, border-color 0.16s ease;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ gap: 0.45rem;
+ padding: 1rem 0.65rem;
+ font-weight: 800;
+ cursor: pointer;
+ user-select: none;
+ overflow: hidden;
+ }
+
+ .admin-btn-3d:hover {
+ transform: translateY(-3px);
+ box-shadow:
+ 0 10px 0 #022c22,
+ 0 16px 30px rgba(16, 185, 129, 0.65),
+ inset 0 2px 3px rgba(255, 255, 255, 0.45) !important;
+ }
+
+ .admin-btn-3d:active,
+ .admin-btn-3d.active-tab {
+ transform: translateY(4px) scale(0.985) !important;
+ border-bottom: 5px solid #fbbf24 !important;
+ box-shadow:
+ 0 3px 0 #78350f,
+ 0 10px 28px rgba(251, 191, 36, 0.9),
+ 0 15px 38px rgba(245, 158, 11, 0.7),
+ inset 0 -8px 16px rgba(251, 191, 36, 0.65),
+ inset 0 2px 2px rgba(255, 255, 255, 0.35) !important;
+ }
+
+ /* Red Styling for Berraghlou */
+ .team-red-row {
+ background: linear-gradient(90deg, rgba(153, 27, 27, 0.42) 0%, rgba(127, 29, 29, 0.25) 100%) !important;
+ border-right: 4px solid #ef4444 !important;
+ }
+
+ .team-red-pill {
+ background: rgba(153, 27, 27, 0.55) !important;
+ border: 1px solid rgba(239, 68, 68, 0.75) !important;
+ color: #fecaca !important;
+ box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
+ }
+
+ .team-red-btn {
+ background: linear-gradient(180deg, #991b1b 0%, #7f1d1d 100%) !important;
+ border: 1px solid #f87171 !important;
+ color: #ffffff !important;
+ box-shadow: 0 5px 0 #450a0a, 0 6px 16px rgba(239, 68, 68, 0.35) !important;
+ }
+
+ /* Vote Card */
+ .vote-card {
+ background: linear-gradient(160deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.92) 100%);
+ border: 1px solid rgba(245, 158, 11, 0.22);
+ box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+ transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+ }
+ .vote-card:hover {
+ transform: translateY(-4px);
+ border-color: rgba(245, 158, 11, 0.7);
+ box-shadow: 0 14px 30px rgba(245, 158, 11, 0.2);
+ }
+
+ /* Neon & Gold Typography */
+ .neon-text {
+ font-weight: 900;
+ background: linear-gradient(to left, #38bdf8, #818cf8, #38bdf8);
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.35));
+ }
+
+ .gold-cup {
+ font-family: 'Rajdhani', sans-serif;
+ font-weight: 900;
+ background: linear-gradient(to right, #fde68a, #f59e0b, #d97706);
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ letter-spacing: 2.5px;
+ filter: drop-shadow(0 3px 6px rgba(245, 158, 11, 0.4));
+ }
+
+ /* Seamless RTL Breaking News Ticker */
+ .ticker-glass {
+ position: fixed;
+ bottom: 0;
+ left: 0;
+ right: 0;
+ background: rgba(3, 7, 18, 0.92);
+ backdrop-filter: blur(16px);
+ -webkit-backdrop-filter: blur(16px);
+ border-top: 1px solid rgba(16, 185, 129, 0.4);
+ z-index: 60;
+ display: flex;
+ align-items: center;
+ padding: 10px 14px;
+ box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.6);
+ }
+
+ .pulse-badge {
+ background: linear-gradient(135deg, #ef4444, #b91c1c);
+ color: #ffffff;
+ padding: 5px 12px;
+ border-radius: 8px;
+ font-weight: 900;
+ font-size: 0.78rem;
+ box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+ animation: pulse-red 2s infinite;
+ white-space: nowrap;
+ margin-left: 14px;
+ flex-shrink: 0;
+ }
+
+ @keyframes pulse-red {
+ 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+ 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+ 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+ }
+
+ .ticker-wrap {
+ overflow: hidden;
+ flex: 1;
+ mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+ -webkit-mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+ }
+
+ .ticker-track {
+ display: flex;
+ width: max-content;
+ animation: ticker-rtl 28s linear infinite;
+ }
+
+ .ticker-track:hover { animation-play-state: paused; }
+
+ .ticker-item {
+ padding: 0 1.75rem;
+ font-weight: 700;
+ font-size: 0.9rem;
+ color: #e2e8f0;
+ white-space: nowrap;
+ }
+
+ @keyframes ticker-rtl {
+ 0% { transform: translateX(0); }
+ 100% { transform: translateX(50%); }
+ }
+
+ /* Notifications Bell */
+ .notification-pulse {
+ animation: bell-ring 2.2s infinite;
+ transform-origin: top center;
+ }
+
+ @keyframes bell-ring {
+ 0%, 50%, 100% { transform: rotate(0); }
+ 10% { transform: rotate(14deg); }
+ 20% { transform: rotate(-14deg); }
+ 30% { transform: rotate(9deg); }
+ 40% { transform: rotate(-9deg); }
+ }
+
+ .top-badge {
+ position: absolute;
+ top: -6px;
+ left: -6px;
+ background: #ef4444;
+ color: white;
+ border-radius: 9999px;
+ min-width: 20px;
+ height: 20px;
+ padding: 0 5px;
+ font-size: 10px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-weight: 900;
+ border: 2px solid #0f172a;
+ box-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
+ }
+
+ .animate-fade-in { animation: fadeIn 0.25s ease-out; }
+ @keyframes fadeIn {
+ from { opacity: 0; transform: translateY(6px); }
+ to { opacity: 1; transform: translateY(0); }
+ }
+
+ .scrollbar-hide::-webkit-scrollbar { display: none; }
+ .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+ ::-webkit-scrollbar { width: 6px; height: 6px; }
+ ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); border-radius: 10px; }
+ ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+ ::-webkit-scrollbar-thumb:hover { background: #475569; }
+ </style>
+</head>
+<body>
+ <div id="root" class="w-full max-w-5xl mx-auto flex flex-col items-center justify-start p-3 md:p-6"></div>
+
+ <script type="module">
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+ import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+ import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+ /* إعدادات Firebase Firestore السحابية (يمكن تعديلها مباشرة من لوحة المدير داخل التطبيق) */
+ const defaultFirebaseConfig = {
+ // apiKey: "YOUR_API_KEY",
+ // authDomain: "YOUR_AUTH_DOMAIN",
+ // projectId: "YOUR_PROJECT_ID",
+ // storageBucket: "YOUR_STORAGE_BUCKET",
+ // messagingSenderId: "YOUR_MESSAGING_ID",
+ // appId: "YOUR_APP_ID"
+ };
+
+ let activeConfig = defaultFirebaseConfig;
+ try {
+ const savedCfg = localStorage.getItem('berraghlou_firebase_cfg');
+ if (savedCfg) {
+ const parsedCfg = JSON.parse(savedCfg);
+ if (parsedCfg && parsedCfg.apiKey && parsedCfg.projectId) {
+ activeConfig = parsedCfg;
+ }
+ }
+ } catch (e) {}
+ 
+ let app, db, auth;
+ try {
+ if (activeConfig && activeConfig.apiKey && activeConfig.projectId) {
+ app = initializeApp(activeConfig);
+ db = getFirestore(app);
+ auth = getAuth(app);
+ }
+ } catch (e) {
+ console.warn("Firebase Firestore init fallback:", e);
+ }
+
+ window.db = db;
+ window.auth = auth;
+ window.doc = doc;
+ window.setDoc = setDoc;
+ window.onSnapshot = onSnapshot;
+ window.signInAnonymously = signInAnonymously;
+ window.initFirebaseDynamic = (cfg) => {
+ const dynApp = initializeApp(cfg, "dynamic_" + Date.now());
+ window.db = getFirestore(dynApp);
+ window.auth = getAuth(dynApp);
+ window.dispatchEvent(new CustomEvent('berraghlou-firebase-ready'));
+ return { db: window.db, auth: window.auth };
+ };
+ </script>
+
+ <script type="text/babel">
+ const DISQUALIFIED_TEAM = 'براغلو';
+ const ADMIN_PIN = 'amar.braglo2026';
+
+ function App() {
+ const [activeTab, setActiveTab] = React.useState('matches'); 
+ const [isAdmin, setIsAdmin] = React.useState(false); 
+ const [showLoginModal, setShowLoginModal] = React.useState(false);
+ const [passwordInput, setPasswordInput] = React.useState('');
+ const [loginError, setLoginError] = React.useState('');
+ 
+ const [selectedMatchGroup, setSelectedMatchGroup] = React.useState(null);
+ const [selectedRosterTeam, setSelectedRosterTeam] = React.useState('رابح رويلة');
+ const [selectedCardsTeam, setSelectedCardsTeam] = React.useState('رابح رويلة');
+ 
+ const [cloudStatus, setCloudStatus] = React.useState('جاري الاتصال بـ Firestore...');
+ const [cloudMode, setCloudMode] = React.useState('connecting'); // 'firebase' | 'cloud_rest' | 'local'
+ const [isSyncing, setIsSyncing] = React.useState(false);
+ const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
+ const [toastMsg, setToastMsg] = React.useState('');
+ const [showCloudModal, setShowCloudModal] = React.useState(false);
+ const [cloudBinId, setCloudBinId] = React.useState(() => localStorage.getItem('berraghlou_cloud_bin') || 'berraghlou-dream-cup-2026-live');
+ const [firebaseJsonInput, setFirebaseJsonInput] = React.useState(() => localStorage.getItem('berraghlou_firebase_cfg') || '');
+ const [firestoreDocId, setFirestoreDocId] = React.useState(() => localStorage.getItem('berraghlou_firestore_doc') || 'berraghlou2026');
+ const [firebaseEpoch, setFirebaseEpoch] = React.useState(0);
+
+ const showToast = (msg) => {
+ setToastMsg(msg);
+ setTimeout(() => setToastMsg(''), 2800);
+ };
+
+ const groups = [
+ { id: 1, name: 'المجموعة الأولى', teams: ['إيشوبار', 'سيليساو', 'نابولي', 'أهل الكدية'] },
+ { id: 2, name: 'المجموعة الثانية', teams: ['رابح رويلة', 'إسبانيا', 'براغلو', 'عليلقية'] },
+ { id: 3, name: 'المجموعة الثالثة', teams: ['سيلتيك', 'لمرايل', 'شبيبة تاليلت', 'العزلة'] },
+ { id: 4, name: 'المجموعة الرابعة', teams: ['أف سي بلحسنات', 'دباغة', 'حدادة', 'الرول'] }
+ ];
+
+ const allTeams = React.useMemo(() => groups.flatMap(g => g.teams), []);
+
+ const [matches, setMatches] = React.useState([]);
+ const [knockoutMatches, setKnockoutMatches] = React.useState([]);
+ const [players, setPlayers] = React.useState([]);
+ const [scorers, setScorers] = React.useState([]);
+ const [chatMessages, setChatMessages] = React.useState([]);
+ const [bestPlayers, setBestPlayers] = React.useState([]);
+ const [tickerMessages, setTickerMessages] = React.useState([]);
+ const [notifications, setNotifications] = React.useState([]);
+ const [unreadCount, setUnreadCount] = React.useState(0);
+ 
+ const [newChatMessage, setNewChatMessage] = React.useState('');
+ const [chatUser, setChatUser] = React.useState('');
+ const [newTickerMsg, setNewTickerMsg] = React.useState('');
+ const [newNotificationTitle, setNewNotificationTitle] = React.useState('');
+ const [newNotificationBody, setNewNotificationBody] = React.useState('');
+ const [hasVoted, setHasVoted] = React.useState(() => localStorage.getItem('berraghlou_voted_2026') === 'true');
+
+ const markDirty = () => {
+ if (isAdmin) setHasUnsavedChanges(true);
+ };
+
+ React.useEffect(() => {
+ const onReady = () => setFirebaseEpoch(e => e + 1);
+ window.addEventListener('berraghlou-firebase-ready', onReady);
+ return () => window.removeEventListener('berraghlou-firebase-ready', onReady);
+ }, []);
+
+ const initLocalData = () => {
+ const initM = [
+ // المجموعة الأولى (6 مباريات)
+ { id: 1, group: 'المجموعة الأولى', round: 'الجولة 1', team1: 'أهل الكدية', team2: 'نابولي', date: '2026-11-20', time: '14:00', score1: 7, score2: 2, status: 'انتهت' },
+ { id: 2, group: 'المجموعة الأولى', round: 'الجولة 1', team1: 'سيليساو', team2: 'إيشوبار', date: '2026-11-20', time: '15:30', score1: 2, score2: 2, status: 'انتهت' },
+ { id: 3, group: 'المجموعة الأولى', round: 'الجولة 2', team1: 'أهل الكدية', team2: 'سيليساو', date: '2026-11-24', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 4, group: 'المجموعة الأولى', round: 'الجولة 2', team1: 'نابولي', team2: 'إيشوبار', date: '2026-11-24', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 5, group: 'المجموعة الأولى', round: 'الجولة 3', team1: 'أهل الكدية', team2: 'إيشوبار', date: '2026-11-28', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 6, group: 'المجموعة الأولى', round: 'الجولة 3', team1: 'نابولي', team2: 'سيليساو', date: '2026-11-28', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
+
+ // المجموعة الثانية (6 مباريات)
+ { id: 7, group: 'المجموعة الثانية', round: 'الجولة 1', team1: 'رابح رويلة', team2: 'إسبانيا', date: '2026-11-21', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 8, group: 'المجموعة الثانية', round: 'الجولة 1', team1: 'براغلو', team2: 'عليلقية', date: '2026-11-21', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 9, group: 'المجموعة الثانية', round: 'الجولة 2', team1: 'رابح رويلة', team2: 'براغلو', date: '2026-11-25', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 10, group: 'المجموعة الثانية', round: 'الجولة 2', team1: 'إسبانيا', team2: 'عليلقية', date: '2026-11-25', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 11, group: 'المجموعة الثانية', round: 'الجولة 3', team1: 'رابح رويلة', team2: 'عليلقية', date: '2026-11-29', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 12, group: 'المجموعة الثانية', round: 'الجولة 3', team1: 'إسبانيا', team2: 'براغلو', date: '2026-11-29', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
+
+ // المجموعة الثالثة (6 مباريات)
+ { id: 13, group: 'المجموعة الثالثة', round: 'الجولة 1', team1: 'سيلتيك', team2: 'لمرايل', date: '2026-11-22', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 14, group: 'المجموعة الثالثة', round: 'الجولة 1', team1: 'شبيبة تاليلت', team2: 'العزلة', date: '2026-11-22', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 15, group: 'المجموعة الثالثة', round: 'الجولة 2', team1: 'سيلتيك', team2: 'شبيبة تاليلت', date: '2026-11-26', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 16, group: 'المجموعة الثالثة', round: 'الجولة 2', team1: 'لمرايل', team2: 'العزلة', date: '2026-11-26', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 17, group: 'المجموعة الثالثة', round: 'الجولة 3', team1: 'سيلتيك', team2: 'العزلة', date: '2026-11-30', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 18, group: 'المجموعة الثالثة', round: 'الجولة 3', team1: 'لمرايل', team2: 'شبيبة تاليلت', date: '2026-11-30', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
+
+ // المجموعة الرابعة (6 مباريات)
+ { id: 19, group: 'المجموعة الرابعة', round: 'الجولة 1', team1: 'أف سي بلحسنات', team2: 'دباغة', date: '2026-11-23', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 20, group: 'المجموعة الرابعة', round: 'الجولة 1', team1: 'حدادة', team2: 'الرول', date: '2026-11-23', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 21, group: 'المجموعة الرابعة', round: 'الجولة 2', team1: 'أف سي بلحسنات', team2: 'حدادة', date: '2026-11-27', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 22, group: 'المجموعة الرابعة', round: 'الجولة 2', team1: 'دباغة', team2: 'الرول', date: '2026-11-27', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 23, group: 'المجموعة الرابعة', round: 'الجولة 3', team1: 'أف سي بلحسنات', team2: 'الرول', date: '2026-12-01', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 24, group: 'المجموعة الرابعة', round: 'الجولة 3', team1: 'دباغة', team2: 'حدادة', date: '2026-12-01', time: '15:30', score1: 0, score2: 0, status: 'قريباً' }
+ ];
+
+ const initKnockout = [
+ { id: 101, stage: 'ربع النهائي', label: 'ربع النهائي 1', team1: 'أول المجموعة 1', team2: 'ثاني المجموعة 2', date: '2026-12-04', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 102, stage: 'ربع النهائي', label: 'ربع النهائي 2', team1: 'أول المجموعة 2', team2: 'ثاني المجموعة 1', date: '2026-12-04', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 103, stage: 'ربع النهائي', label: 'ربع النهائي 3', team1: 'أول المجموعة 3', team2: 'ثاني المجموعة 4', date: '2026-12-05', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 104, stage: 'ربع النهائي', label: 'ربع النهائي 4', team1: 'أول المجموعة 4', team2: 'ثاني المجموعة 3', date: '2026-12-05', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 201, stage: 'نصف النهائي', label: 'نصف النهائي 1', team1: 'الفائز من ربع 1', team2: 'الفائز من ربع 3', date: '2026-12-08', time: '14:30', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 202, stage: 'نصف النهائي', label: 'نصف النهائي 2', team1: 'الفائز من ربع 2', team2: 'الفائز من ربع 4', date: '2026-12-08', time: '16:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 301, stage: 'المركز الثالث', label: 'مباراة الترتيب', team1: 'المنهزم من نصف 1', team2: 'المنهزم من نصف 2', date: '2026-12-11', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 401, stage: 'النهائي', label: 'المباراة النهائية', team1: 'الفائز من نصف 1', team2: 'الفائز من نصف 2', date: '2026-12-12', time: '15:00', score1: 0, score2: 0, status: 'قريباً' }
+ ];
+ 
+ const teamRosters = {
+ 'رابح رويلة': ['علوي أمين','علوي رابح','ترياقي رفيق','ترياقي خالد','الهادي أقويزرا','وليد بن علاق','حسام قشوط','إلياس برديوي','كريمو قادر','حميد سناني','توفيق لوبار','حسين لوبار','ياسر بلقلاوي'],
+ 'إسبانيا': ['شمس الدين تيرسانيت','قاديرو سعي','عبد المالك فليسي','أيمن قانا','سعيداني محمد','إخلفيوي أسامة','أيت حمودة قايا','سفيان حايق','أمين تيرسانيت'],
+ 'براغلو': ['عزة ناصر','أيمن مرداسي','سرحان عبد الله','أنيس كانون','نسيم عبد الحي','عمر بوستة','يوسف كابوس','رياض عزاز','طارق الديب','أيمن زرب','هشام الفاس','شرقي محمد أمين'],
+ 'عليلقية': ['عماد شاوش راحيل','حماليت مروان','فؤاد كانون','فوهي مراد','عبد الرحمان براهيم','مزروتي فاروق','لعزيزو حسين','هشام عبد الرزاق','مشايا يسين','أحمد بويحياوي','بوطالب موراد','نبل الوناس','لحمال بن قادة','شوقي ضامزي','عبدي عبد السلام'],
+ 'سيلتيك': ['سليم بوشنات','حسام بن فلاح','وسيم مشارق','بلقاضي جمال الدين','زكريا عياشي','عادل رميث','سليم بادي','واليد فنانتي','شمس الدين بوجميا','عادل قدقم','رفيق بومشوان'],
+ 'لمرايل': ['عيادي سيد أحمد','مريولي موسى','نصيب تواتي','أيوب بلمسك','مالكي محمد','مريولي زين الدين','حنامي يونس','طارق زروق','زهير سالمي','قسوم رابح الله','قاسمي عبد الله','أيمن مريولي','أيوب مريولي','حسام مريولي'],
+ 'أف سي بلحسنات': ['فيصل ب.','وليد ف.','عبد النور ب.','فتحي ب.','يعقوبي ن.','قادر ز.','عماد ب.','سبعاوي ن.','أمين ف.','عبد الرحمان ف.','عادل ف.','نبيل ر.','أيوب ب.','نجيب نجيب']
+ };
+
+ const initP = [];
+ let pId = 1;
+ allTeams.forEach(team => {
+ const list = teamRosters[team] || Array.from({length: 14}, (_, i) => `لاعب ${i+1} (${team})`);
+ list.forEach(n => initP.push({ id: pId++, name: n, team: team, yellowCards: 0, redCards: 0 }));
+ });
+ 
+ const initS = [
+ { id: 1, name: 'أمين تيرسانيت', team: 'إسبانيا', goals: 4 },
+ { id: 2, name: 'سليم بوشنات', team: 'سيلتيك', goals: 3 },
+ { id: 3, name: 'عيادي سيد أحمد', team: 'لمرايل', goals: 2 },
+ { id: 4, name: 'علوي أمين', team: 'رابح رويلة', goals: 2 },
+ { id: 5, name: 'عماد شاوش راحيل', team: 'عليلقية', goals: 1 },
+ { id: 6, name: 'فيصل ب.', team: 'أف سي بلحسنات', goals: 1 }
+ ];
+
+ setMatches(initM);
+ setKnockoutMatches(initKnockout);
+ setScorers(initS);
+ setPlayers(initP);
+ setChatMessages([{ id: 1, user: 'لجنة التنظيم', text: 'مرحباً بالجميع في الدردشة السحابية لدورة كأس الأحلام ببراغلو 2026!', time: '10:00' }]);
+ setBestPlayers([
+ { id: 1, name: 'سليم بوشنات', team: 'سيلتيك', votes: 128 },
+ { id: 2, name: 'عيادي سيد أحمد', team: 'لمرايل', votes: 115 },
+ { id: 3, name: 'شمس الدين تيرسانيت', team: 'إسبانيا', votes: 98 },
+ { id: 4, name: 'علوي أمين', team: 'رابح رويلة', votes: 87 }
+ ]);
+ setTickerMessages([
+ 'مرحباً بكم في دورة BERRAGHLOU DREAM CUP 2026',
+ 'مزامنة سحابية فورية عبر Firebase Firestore وترتيب آلي مباشر',
+ 'شاركوا في التصويت المباشر لاختيار أحسن لاعب في الدورة'
+ ]);
+ const initNotifs = [
+ { id: 1, title: 'انطلاق الدورة والمزامنة السحابية', body: 'تم تفعيل المزامنة السحابية وحساب الترتيب التلقائي والتصويت المباشر ودردشة المشجعين.', time: 'اليوم 10:00' }
+ ];
+ setNotifications(initNotifs);
+ setUnreadCount(1);
+ };
+
+ const applyCloudPayload = (data) => {
+ if (!data || typeof data !== 'object') return false;
+ let applied = false;
+ if (Array.isArray(data.matches) && data.matches.length >= 24) { setMatches(data.matches); applied = true; }
+ if (Array.isArray(data.knockoutMatches) && data.knockoutMatches.length > 0) { setKnockoutMatches(data.knockoutMatches); applied = true; }
+ if (Array.isArray(data.players) && data.players.length > 0) { setPlayers(data.players); applied = true; }
+ if (Array.isArray(data.scorers) && data.scorers.length > 0) { setScorers(data.scorers); applied = true; }
+ if (Array.isArray(data.chatMessages)) { setChatMessages(data.chatMessages); applied = true; }
+ if (Array.isArray(data.bestPlayers) && data.bestPlayers.length > 0) { setBestPlayers(data.bestPlayers); applied = true; }
+ if (Array.isArray(data.tickerMessages) && data.tickerMessages.length > 0) { setTickerMessages(data.tickerMessages); applied = true; }
+ if (Array.isArray(data.notifications)) {
+ const lastSeenId = Number(localStorage.getItem('lastSeenNotificationId') || 0);
+ setNotifications(data.notifications);
+ setUnreadCount(data.notifications.filter(n => n.id > lastSeenId).length);
+ applied = true;
+ }
+ if (applied) {
+ localStorage.setItem('berraghlouData_v5', JSON.stringify(data));
+ }
+ return applied;
+ };
+
+ const loadLocalFallback = () => {
+ try {
+ const savedData = localStorage.getItem('berraghlouData_v5') || localStorage.getItem('berraghlouData_v4');
+ if (savedData) {
+ const parsed = JSON.parse(savedData);
+ if (!applyCloudPayload(parsed)) initLocalData();
+ } else {
+ initLocalData();
+ }
+ } catch (err) {
+ initLocalData();
+ }
+ };
+
+ // الاتصال الفوري في الوقت الفعلي عبر Firebase Firestore مع احتياطي سحابي ومحلي
+ React.useEffect(() => {
+ let pollInterval = null;
+ let unsubscribeFirestore = null;
+ let isCancelled = false;
+
+ const startRestCloudSync = async () => {
+ const bucket = (cloudBinId || 'berraghlou-dream-cup-2026-live').replace(/[^a-zA-Z0-9_-]/g, '');
+ const cloudUrl = `https://kvdb.io/A9xK7mP2qR8vL4nW6zT1/${bucket}`;
+ try {
+ const res = await fetch(cloudUrl, { method: 'GET', cache: 'no-store' });
+ if (!isCancelled && res.ok) {
+ const text = await res.text();
+ if (text && text.trim().startsWith('{')) {
+ const cloudData = JSON.parse(text);
+ if (applyCloudPayload(cloudData)) {
+ setCloudMode('cloud_rest');
+ setCloudStatus('متصل بالسحابة (مباشر)');
+ } else {
+ loadLocalFallback();
+ setCloudMode('cloud_rest');
+ setCloudStatus('متصل بالسحابة (جاهز)');
+ }
+ } else {
+ loadLocalFallback();
+ setCloudMode('cloud_rest');
+ setCloudStatus('متصل بالسحابة (جاهز)');
+ }
+ } else if (!isCancelled) {
+ loadLocalFallback();
+ setCloudMode('cloud_rest');
+ setCloudStatus('متصل بالسحابة (جاهز)');
+ }
+ } catch (e) {
+ if (!isCancelled) {
+ loadLocalFallback();
+ setCloudMode('local');
+ setCloudStatus('وضع محلي (بدون إنترنت)');
+ }
+ }
+
+ pollInterval = setInterval(async () => {
+ if (document.hidden || isCancelled) return;
+ try {
+ const r = await fetch(cloudUrl, { method: 'GET', cache: 'no-store' });
+ if (r.ok) {
+ const txt = await r.text();
+ if (txt && txt.trim().startsWith('{')) {
+ const remote = JSON.parse(txt);
+ setCloudMode('cloud_rest');
+ setCloudStatus('متصل بالسحابة (مباشر)');
+ if (!window.__adminDirtyFlag) {
+ applyCloudPayload(remote);
+ }
+ }
+ }
+ } catch (_) {}
+ }, 8000);
+ };
+
+ const attachFirestoreListener = async () => {
+ if (!window.db || !window.doc || !window.onSnapshot) {
+ startRestCloudSync();
+ return;
+ }
+ try {
+ if (window.auth && window.signInAnonymously) {
+ await window.signInAnonymously(window.auth).catch(() => {});
+ }
+ if (isCancelled) return;
+ const docKey = (firestoreDocId || 'berraghlou2026').trim() || 'berraghlou2026';
+ const tournamentRef = window.doc(window.db, "tournaments", docKey);
+ unsubscribeFirestore = window.onSnapshot(
+ tournamentRef,
+ (docSnap) => {
+ if (isCancelled) return;
+ setCloudMode('firebase');
+ setCloudStatus('مزامنة فورية (Firestore Live)');
+ if (docSnap.exists()) {
+ if (!window.__adminDirtyFlag) {
+ applyCloudPayload(docSnap.data());
+ }
+ } else {
+ loadLocalFallback();
+ }
+ },
+ (err) => {
+ console.warn("Firestore snapshot fallback:", err);
+ if (!isCancelled) startRestCloudSync();
+ }
+ );
+ } catch (e) {
+ if (!isCancelled) startRestCloudSync();
+ }
+ };
+
+ attachFirestoreListener();
+
+ return () => {
+ isCancelled = true;
+ if (unsubscribeFirestore) unsubscribeFirestore();
+ if (pollInterval) clearInterval(pollInterval);
+ };
+ }, [cloudBinId, firestoreDocId, firebaseEpoch]);
+
+ React.useEffect(() => {
+ window.__adminDirtyFlag = hasUnsavedChanges;
+ }, [hasUnsavedChanges]);
+
+ const buildFullSnapshot = (overrides = {}) => ({
+ matches,
+ knockoutMatches,
+ players,
+ scorers,
+ chatMessages,
+ bestPlayers,
+ tickerMessages,
+ notifications,
+ updatedAt: new Date().toISOString(),
+ ...overrides
+ });
+
+ // الحفظ اليدوي والسريع للتعديلات في Firebase Firestore + السحابة + الذاكرة المحلية
+ const handleSaveData = async () => {
+ const dataToSave = buildFullSnapshot();
+ localStorage.setItem('berraghlouData_v5', JSON.stringify(dataToSave));
+ setIsSyncing(true);
+
+ if (window.db && window.doc && window.setDoc) {
+ try {
+ const docKey = (firestoreDocId || 'berraghlou2026').trim() || 'berraghlou2026';
+ const ref = window.doc(window.db, "tournaments", docKey);
+ await window.setDoc(ref, dataToSave, { merge: true });
+ setIsSyncing(false);
+ setHasUnsavedChanges(false);
+ setCloudMode('firebase');
+ setCloudStatus('مزامنة فورية (Firestore Live)');
+ showToast('تمت المزامنة الفورية وحفظ التعديلات في Firestore');
+ return;
+ } catch (e) {
+ console.warn("Firestore save failed, trying cloud REST:", e);
+ }
+ }
+
+ const bucket = (cloudBinId || 'berraghlou-dream-cup-2026-live').replace(/[^a-zA-Z0-9_-]/g, '');
+ const cloudUrl = `https://kvdb.io/A9xK7mP2qR8vL4nW6zT1/${bucket}`;
+ try {
+ const res = await fetch(cloudUrl, {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify(dataToSave)
+ });
+ setIsSyncing(false);
+ setHasUnsavedChanges(false);
+ if (res.ok) {
+ setCloudMode('cloud_rest');
+ setCloudStatus('متصل بالسحابة (مباشر)');
+ showToast('تمت المزامنة والحفظ في السحابة بنجاح');
+ } else {
+ showToast('تم الحفظ محلياً (تعذر الوصول للخادم السحابي)');
+ }
+ } catch (err) {
+ setIsSyncing(false);
+ setHasUnsavedChanges(false);
+ showToast('تم حفظ التعديلات محلياً بنجاح');
+ }
+ };
+
+ const handleSaveCloudSettings = (e) => {
+ e.preventDefault();
+ const cleanId = cloudBinId.trim() || 'berraghlou-dream-cup-2026-live';
+ const cleanDoc = firestoreDocId.trim() || 'berraghlou2026';
+ localStorage.setItem('berraghlou_cloud_bin', cleanId);
+ localStorage.setItem('berraghlou_firestore_doc', cleanDoc);
+ setCloudBinId(cleanId);
+ setFirestoreDocId(cleanDoc);
+
+ if (firebaseJsonInput.trim()) {
+ try {
+ const parsed = JSON.parse(firebaseJsonInput.trim());
+ if (parsed.apiKey && parsed.projectId) {
+ localStorage.setItem('berraghlou_firebase_cfg', JSON.stringify(parsed));
+ if (window.initFirebaseDynamic) {
+ window.initFirebaseDynamic(parsed);
+ }
+ setShowCloudModal(false);
+ showToast('تم ربط Firebase Firestore السحابي بنجاح');
+ return;
+ }
+ } catch (err) {
+ showToast('صيغة JSON غير صحيحة، تم اعتماد معرف السحابة المباشر');
+ }
+ } else {
+ localStorage.removeItem('berraghlou_firebase_cfg');
+ }
+ setShowCloudModal(false);
+ showToast('تم تحديث إعدادات الربط السحابي بنجاح');
+ };
+
+ const handleAdminLogin = (e) => {
+ e.preventDefault();
+ if (passwordInput === ADMIN_PIN) {
+ setIsAdmin(true);
+ setLoginError('');
+ setShowLoginModal(false);
+ setPasswordInput('');
+ showToast('تم تفعيل لوحة تحكم المدير (amar.braglo2026)');
+ } else {
+ setLoginError('الرمز السري غير صحيح');
+ }
+ };
+
+ const handleMatchEdit = (id, field, value) => {
+ setMatches(prev => prev.map(m => m.id === id ? { ...m, [field]: value } : m));
+ markDirty();
+ };
+
+ const handleScoreChange = (id, field, delta) => {
+ setMatches(prev => prev.map(m => m.id === id ? { ...m, [field]: Math.max(0, (Number(m[field]) || 0) + delta), status: 'انتهت' } : m));
+ markDirty();
+ };
+
+ const handleKnockoutEdit = (id, field, value) => {
+ setKnockoutMatches(prev => prev.map(m => m.id === id ? { ...m, [field]: value } : m));
+ markDirty();
+ };
+
+ const handleKnockoutScore = (id, field, delta) => {
+ setKnockoutMatches(prev => prev.map(m => m.id === id ? { ...m, [field]: Math.max(0, (Number(m[field]) || 0) + delta), status: 'انتهت' } : m));
+ markDirty();
+ };
+
+ const handleCardChange = (id, type, delta) => {
+ setPlayers(prev => prev.map(p => p.id === id ? { ...p, [type]: Math.max(0, (p[type] || 0) + delta) } : p));
+ markDirty();
+ };
+
+ const handleScorerEdit = (id, field, value) => {
+ setScorers(prev => prev.map(s => s.id === id ? { ...s, [field]: value } : s));
+ markDirty();
+ };
+
+ const pushPublicInteractionToCloud = async (updatedBestPlayers, updatedChat) => {
+ const payload = buildFullSnapshot({
+ bestPlayers: updatedBestPlayers || bestPlayers,
+ chatMessages: updatedChat || chatMessages
+ });
+ localStorage.setItem('berraghlouData_v5', JSON.stringify(payload));
+ if (window.db && window.doc && window.setDoc) {
+ try {
+ const docKey = (firestoreDocId || 'berraghlou2026').trim() || 'berraghlou2026';
+ const ref = window.doc(window.db, "tournaments", docKey);
+ await window.setDoc(ref, {
+ bestPlayers: payload.bestPlayers,
+ chatMessages: payload.chatMessages,
+ updatedAt: payload.updatedAt
+ }, { merge: true });
+ return;
+ } catch (_) {}
+ }
+ const bucket = (cloudBinId || 'berraghlou-dream-cup-2026-live').replace(/[^a-zA-Z0-9_-]/g, '');
+ fetch(`https://kvdb.io/A9xK7mP2qR8vL4nW6zT1/${bucket}`, {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify(payload)
+ }).catch(() => {});
+ };
+
+ const handleVote = (id) => {
+ if (hasVoted && !isAdmin) {
+ showToast('لقد قمت بالتصويت مسبقاً');
+ return;
+ }
+ const nextBest = bestPlayers.map(p => p.id === id ? { ...p, votes: p.votes + 1 } : p);
+ setBestPlayers(nextBest);
+ if (!isAdmin) {
+ setHasVoted(true);
+ localStorage.setItem('berraghlou_voted_2026', 'true');
+ pushPublicInteractionToCloud(nextBest, null);
+ } else {
+ markDirty();
+ }
+ showToast('تم تسجيل تصويتك ومزامنته مباشرة');
+ };
+
+ const handleSendChat = (e) => {
+ e.preventDefault();
+ if (!newChatMessage.trim()) return;
+ const newMsg = {
+ id: Date.now(),
+ user: chatUser.trim() || (isAdmin ? 'مدير الدورة' : 'مشجع'),
+ text: newChatMessage.trim(),
+ time: new Date().toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' })
+ };
+ const nextChat = [...chatMessages, newMsg];
+ setChatMessages(nextChat);
+ setNewChatMessage('');
+ if (!isAdmin) {
+ pushPublicInteractionToCloud(null, nextChat);
+ } else {
+ markDirty();
+ }
+ };
+
+ const handleDeleteChatMsg = (msgId) => {
+ if (!isAdmin) return;
+ setChatMessages(prev => prev.filter(m => m.id !== msgId));
+ markDirty();
+ };
+
+ const handleAddTicker = (e) => {
+ e.preventDefault();
+ if (!newTickerMsg.trim()) return;
+ setTickerMessages(prev => [...prev, newTickerMsg.trim()]);
+ setNewTickerMsg('');
+ markDirty();
+ showToast('تمت إضافة الخبر للشريط العاجل');
+ };
+
+ const handleDeleteTicker = (idx) => {
+ setTickerMessages(prev => prev.filter((_, i) => i !== idx));
+ markDirty();
+ };
+
+ const handleAddNotification = (e) => {
+ e.preventDefault();
+ if (!newNotificationTitle.trim() || !newNotificationBody.trim()) return;
+ const newNotif = {
+ id: Date.now(),
+ title: newNotificationTitle.trim(),
+ body: newNotificationBody.trim(),
+ time: new Date().toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' })
+ };
+ setNotifications(prev => [newNotif, ...prev]);
+ setNewNotificationTitle('');
+ setNewNotificationBody('');
+ markDirty();
+ showToast('تم إرسال الإشعار بنجاح');
+ };
+
+ const markNotificationsAsRead = () => {
+ if (notifications.length > 0) {
+ localStorage.setItem('lastSeenNotificationId', String(notifications[0].id));
+ setUnreadCount(0);
+ }
+ };
+
+ // حساب تلقائي لجدول الترتيب لكل فوج
+ const computedStandings = React.useMemo(() => {
+ return groups.map(g => {
+ let stats = g.teams.map(t => ({
+ team: t,
+ isDisqualified: t === DISQUALIFIED_TEAM,
+ played: 0, won: 0, drawn: 0, lost: 0, gf: 0, ga: 0, gd: 0, points: 0
+ }));
+ matches.forEach(m => {
+ const s1 = Number(m.score1) || 0;
+ const s2 = Number(m.score2) || 0;
+ if (m.group === g.name && m.status === 'انتهت') {
+ let t1 = stats.find(t => t.team === m.team1);
+ let t2 = stats.find(t => t.team === m.team2);
+ if (t1 && t2 && !t1.isDisqualified && !t2.isDisqualified) {
+ t1.played++; t2.played++;
+ t1.gf += s1; t1.ga += s2;
+ t2.gf += s2; t2.ga += s1;
+ if (s1 > s2) { t1.won++; t1.points += 3; t2.lost++; }
+ else if (s1 < s2) { t2.won++; t2.points += 3; t1.lost++; }
+ else { t1.drawn++; t2.drawn++; t1.points += 1; t2.points += 1; }
+ }
+ }
+ });
+ stats.forEach(t => t.gd = t.gf - t.ga);
+ stats.sort((a, b) => {
+ if (a.isDisqualified && !b.isDisqualified) return 1;
+ if (!a.isDisqualified && b.isDisqualified) return -1;
+ return b.points - a.points || b.gd - a.gd || b.gf - a.gf;
+ });
+ return { groupName: g.name, standings: stats };
+ });
+ }, [matches]);
+
+ const totalVotes = React.useMemo(
+ () => bestPlayers.reduce((sum, p) => sum + (Number(p.votes) || 0), 0),
+ [bestPlayers]
+ );
+
+ const navBtnClass = (tabName) => {
+ const activeClass = activeTab === tabName ? 'active-tab' : '';
+ if (isAdmin) return `admin-btn-3d ${activeClass}`;
+ return `btn-3d ${activeClass}`;
+ };
+
+ const knockoutStages = ['ربع النهائي', 'نصف النهائي', 'المركز الثالث', 'النهائي'];
+
+ return (
+ <div className={`w-full transition-all duration-500 ${isAdmin ? 'ring-2 ring-emerald-500/60 rounded-3xl p-2 md:p-3 bg-emerald-950/10' : ''}`}>
+ 
+ {/* Toast Notification */}
+ {toastMsg && (
+ <div className="fixed top-5 left-1/2 -translate-x-1/2 z-[10000] bg-emerald-600 text-white font-black text-sm px-6 py-3 rounded-2xl shadow-2xl border border-emerald-300 flex items-center gap-2 animate-fade-in">
+ <i className="fa-solid fa-circle-check"></i>
+ <span>{toastMsg}</span>
+ </div>
+ )}
+
+ {/* زر الحفظ السريع العائم للمدير عند وجود تعديلات غير محفوظة */}
+ {isAdmin && hasUnsavedChanges && (
+ <button
+ onClick={handleSaveData}
+ className="fixed bottom-16 left-4 z-[9000] px-5 py-3 rounded-2xl font-black text-sm bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_25px_rgba(37,99,235,0.7)] border-2 border-blue-300 flex items-center gap-2 animate-bounce cursor-pointer"
+ >
+ <i className="fa-solid fa-floppy-disk text-base"></i>
+ <span>حفظ ومزامنة فورية</span>
+ </button>
+ )}
+
+ {/* الشريط العلوي */}
+ <div className="glass-card p-3 mb-6 flex flex-wrap justify-between items-center gap-2.5 relative z-20">
+ <div className="flex items-center gap-2">
+ <div className={`px-3 py-2 rounded-xl font-black text-xs flex items-center gap-2 border ${isAdmin ? 'bg-emerald-950/70 border-emerald-500/50 text-emerald-300' : 'bg-slate-900/70 border-slate-700/60 text-emerald-400'}`}>
+ <span className="w-2.5 h-2.5 rounded-full animate-pulse bg-emerald-400"></span>
+ <span>{isSyncing ? 'جاري المزامنة...' : (isAdmin ? 'لوحة المدير مفعل (PIN)' : cloudStatus)}</span>
+ </div>
+
+ <button
+ onClick={() => { setActiveTab('notifications'); markNotificationsAsRead(); }}
+ className={`relative px-3.5 py-2 rounded-xl font-black text-xs md:text-sm transition border flex items-center gap-2 cursor-pointer ${activeTab === 'notifications' ? 'bg-rose-600 border-rose-300 text-white shadow-lg shadow-rose-600/30' : (isAdmin ? 'bg-emerald-900/80 border-emerald-400 text-emerald-100 hover:bg-emerald-800' : 'bg-slate-800/90 border-slate-600 text-slate-100 hover:border-rose-400')}`}
+ >
+ <i className={`fa-solid fa-bell ${unreadCount > 0 ? 'notification-pulse text-rose-400' : ''}`}></i>
+ <span>الإشعارات</span>
+ {unreadCount > 0 && <span className="top-badge">{unreadCount}</span>}
+ </button>
+ </div>
+ 
+ <div className="flex items-center gap-2 flex-wrap">
+ {isAdmin && (
+ <>
+ <button
+ onClick={() => setShowCloudModal(true)}
+ className="px-3.5 py-2 rounded-xl font-black text-xs md:text-sm transition flex items-center gap-1.5 cursor-pointer border bg-cyan-950/80 hover:bg-cyan-900 text-cyan-200 border-cyan-500/50"
+ title="إعدادات Firebase Firestore"
+ >
+ <i className="fa-solid fa-cloud-arrow-up text-cyan-400"></i>
+ <span>Firestore</span>
+ </button>
+ <button
+ onClick={handleSaveData}
+ className={`px-4 py-2 rounded-xl font-black text-xs md:text-sm transition flex items-center gap-2 cursor-pointer border ${hasUnsavedChanges ? 'bg-blue-600 hover:bg-blue-500 text-white border-blue-300 shadow-lg shadow-blue-500/40' : 'bg-blue-900/70 hover:bg-blue-800 text-blue-100 border-blue-500/50'}`}
+ >
+ <i className="fa-solid fa-floppy-disk"></i>
+ <span>{hasUnsavedChanges ? 'حفظ ومزامنة سحابية' : 'حفظ المعطيات'}</span>
+ </button>
+ </>
+ )}
+ <button onClick={() => isAdmin ? setIsAdmin(false) : setShowLoginModal(true)} className={`px-4 py-2 rounded-xl font-black text-xs md:text-sm transition border flex items-center gap-2 cursor-pointer ${isAdmin ? 'bg-rose-950/80 border-rose-500/60 text-rose-200 hover:bg-rose-900' : 'bg-slate-800/90 border-slate-600 text-slate-100 hover:bg-slate-700'}`}>
+ <i className={`fa-solid ${isAdmin ? 'fa-lock-open text-rose-400' : 'fa-lock text-cyan-400'}`}></i>
+ <span>{isAdmin ? 'خروج من لوحة المدير' : 'دخول المدير'}</span>
+ </button>
+ </div>
+ </div>
+
+ {/* نافذة تسجيل الدخول برقم التعريف الشخصي للمدير */}
+ {showLoginModal && (
+ <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
+ <div className="glass-card p-7 max-w-sm w-full text-center border-emerald-500/50 relative animate-fade-in">
+ <button onClick={() => { setShowLoginModal(false); setLoginError(''); }} className="absolute top-3 left-4 text-3xl text-slate-400 hover:text-white leading-none">&times;</button>
+ <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-950 border border-emerald-500/50 flex items-center justify-center text-3xl text-emerald-400">
+ <i className="fa-solid fa-shield-halved"></i>
+ </div>
+ <h2 className="text-xl font-black text-emerald-400 mb-2">لوحة تحكم المدير (PIN)</h2>
+ <p className="text-xs text-slate-400 font-bold mb-4">أدخل رمز التعريف الشخصي للتحكم الكامل</p>
+ <form onSubmit={handleAdminLogin} className="space-y-4">
+ <input type="password" value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} placeholder="أدخل الرمز السري..." className="w-full bg-slate-900/90 border border-emerald-500/50 rounded-xl px-4 py-3 text-center text-white font-black text-base focus:outline-none focus:border-emerald-400" required autoFocus />
+ {loginError && <p className="text-rose-400 text-xs font-bold bg-rose-950/60 py-2 rounded-lg border border-rose-500/30">{loginError}</p>}
+ <button type="submit" className="w-full admin-btn-3d py-3 text-base">تأكيد الدخول</button>
+ </form>
+ </div>
+ </div>
+ )}
+
+ {/* نافذة إعدادات Firebase Firestore */}
+ {showCloudModal && (
+ <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
+ <div className="glass-card p-6 max-w-md w-full border-cyan-500/50 relative animate-fade-in">
+ <button onClick={() => setShowCloudModal(false)} className="absolute top-3 left-4 text-3xl text-slate-400 hover:text-white leading-none">&times;</button>
+ <div className="flex items-center gap-3 mb-4">
+ <div className="w-12 h-12 rounded-2xl bg-cyan-950 border border-cyan-500/50 flex items-center justify-center text-2xl text-cyan-400">
+ <i className="fa-solid fa-fire"></i>
+ </div>
+ <div>
+ <h2 className="text-lg font-black text-cyan-400">إعدادات Firebase Firestore</h2>
+ <p className="text-xs text-slate-400 font-bold">الحالة: {cloudStatus}</p>
+ </div>
+ </div>
+ <form onSubmit={handleSaveCloudSettings} className="space-y-4">
+ <div>
+ <label className="block text-xs font-black text-slate-300 mb-1.5">معرّف مستند Firestore (المجموعة: tournaments):</label>
+ <input
+ type="text"
+ value={firestoreDocId}
+ onChange={(e) => setFirestoreDocId(e.target.value)}
+ dir="ltr"
+ className="w-full bg-slate-950 border border-cyan-500/40 rounded-xl px-3.5 py-2 text-cyan-300 font-bold text-xs outline-none focus:border-cyan-400"
+ />
+ </div>
+ <div>
+ <label className="block text-xs font-black text-slate-300 mb-1.5">معرّف الغرفة السحابية الاحتياطية:</label>
+ <input
+ type="text"
+ value={cloudBinId}
+ onChange={(e) => setCloudBinId(e.target.value)}
+ dir="ltr"
+ className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-cyan-300 font-bold text-xs outline-none focus:border-cyan-400"
+ />
+ </div>
+ <div>
+ <label className="block text-xs font-black text-slate-300 mb-1.5">إعدادات Firebase JSON (apiKey, projectId...):</label>
+ <textarea
+ value={firebaseJsonInput}
+ onChange={(e) => setFirebaseJsonInput(e.target.value)}
+ dir="ltr"
+ placeholder='{"apiKey":"...","authDomain":"...","projectId":"..."}'
+ className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-slate-200 font-mono text-xs outline-none focus:border-cyan-400 h-20 resize-none"
+ ></textarea>
+ </div>
+ <div className="flex gap-2">
+ <button type="submit" className="flex-1 admin-btn-3d !py-2.5 text-sm">حفظ وتفعيل Firestore</button>
+ <button type="button" onClick={() => { setShowCloudModal(false); handleSaveData(); }} className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-xs">رفع البيانات الآن</button>
+ </div>
+ </form>
+ </div>
+ </div>
+ )}
+
+ {/* الهيدر وشبكة الأزرار */}
+ <div className="text-center mb-8 relative z-10">
+ <span className="text-amber-400/80 text-[11px] font-black tracking-[0.25em] block mb-1">A. ARAB</span>
+ <h1 className="neon-text text-3xl md:text-5xl mb-1.5">تطبيق براغلو انفو</h1>
+ <h2 className="gold-cup text-lg md:text-2xl uppercase">BERRAGHLOU DREAM CUP 2026</h2>
+ 
+ <div className={`mx-auto my-6 w-24 h-24 rounded-full border-4 flex flex-col items-center justify-center transition-all duration-500 shadow-2xl ${isAdmin ? 'bg-emerald-900/90 border-emerald-400 scale-105 shadow-emerald-500/40' : 'bg-slate-900/85 border-cyan-500/80 shadow-cyan-500/20'}`}>
+ <i className={`fa-solid fa-microphone-lines text-3xl ${isAdmin ? 'text-white' : 'text-cyan-400'}`}></i>
+ <span className="text-[10px] font-black text-slate-200 mt-1 tracking-wider">B.infos</span>
+ </div>
+ 
+ {/* شبكة الأزرار الموحدة 3D */}
+ <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 max-w-4xl mx-auto">
+ <button onClick={() => { setActiveTab('matches'); setSelectedMatchGroup(null); }} className={navBtnClass('matches')}>
+ <i className="fa-solid fa-calendar-days text-2xl"></i>
+ <span className="text-xs md:text-sm">جدول المباريات</span>
+ </button>
+ <button onClick={() => setActiveTab('knockout')} className={navBtnClass('knockout')}>
+ <i className="fa-solid fa-trophy text-2xl"></i>
+ <span className="text-xs md:text-sm">المباريات المتقدمة</span>
+ </button>
+ <button onClick={() => setActiveTab('standings')} className={navBtnClass('standings')}>
+ <i className="fa-solid fa-ranking-star text-2xl"></i>
+ <span className="text-xs md:text-sm">جدول الترتيب</span>
+ </button>
+ <button onClick={() => setActiveTab('players')} className={navBtnClass('players')}>
+ <i className="fa-solid fa-users text-2xl"></i>
+ <span className="text-xs md:text-sm">قوائم الفرق</span>
+ </button>
+ <button onClick={() => setActiveTab('scorers')} className={navBtnClass('scorers')}>
+ <i className="fa-solid fa-futbol text-2xl"></i>
+ <span className="text-xs md:text-sm">الهدافين</span>
+ </button>
+ <button onClick={() => setActiveTab('cards')} className={navBtnClass('cards')}>
+ <div className="flex items-center justify-center gap-1 h-7">
+ <span className="w-3.5 h-5 bg-yellow-400 rounded-sm inline-block shadow"></span>
+ <span className="w-3.5 h-5 bg-red-500 rounded-sm inline-block shadow"></span>
+ </div>
+ <span className="text-xs md:text-sm">البطاقات</span>
+ </button>
+ <button onClick={() => setActiveTab('bestPlayer')} className={navBtnClass('bestPlayer')}>
+ <i className="fa-solid fa-star text-2xl"></i>
+ <span className="text-xs md:text-sm">أحسن لاعب</span>
+ </button>
+ <button onClick={() => setActiveTab('chat')} className={navBtnClass('chat')}>
+ <i className="fa-regular fa-comments text-2xl"></i>
+ <span className="text-xs md:text-sm">الدردشة السحابية</span>
+ </button>
+ </div>
+ </div>
+
+ <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-500/60 to-transparent mb-7"></div>
+
+ {/* محتوى الأقسام */}
+ <div className="min-h-[380px] mb-10 relative z-10 w-full max-w-4xl mx-auto">
+ 
+ {/* 1. جدول المباريات */}
+ {activeTab === 'matches' && (
+ <div className="animate-fade-in">
+ {!selectedMatchGroup ? (
+ <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+ {groups.map(g => (
+ <button key={g.id} onClick={() => setSelectedMatchGroup(g.name)} className={`${isAdmin ? 'admin-btn-3d' : 'btn-3d'} !flex-row p-6 text-lg gap-3`}>
+ <i className="fa-solid fa-shield text-amber-400 text-2xl"></i>
+ <span>{g.name}</span>
+ <span className="text-xs bg-slate-950/60 px-2.5 py-1 rounded-full text-slate-300 border border-slate-700/60">6 مباريات</span>
+ </button>
+ ))}
+ </div>
+ ) : (
+ <div className="glass-card p-5 md:p-6">
+ <div className="flex justify-between items-center mb-5 border-b border-slate-700/60 pb-3.5">
+ <div>
+ <h2 className={`text-xl md:text-2xl font-black ${isAdmin ? 'text-emerald-400' : 'text-amber-400'}`}>{selectedMatchGroup}</h2>
+ <p className="text-xs text-slate-400 font-bold mt-0.5">جميع المباريات الستة (الجولات 1، 2، 3)</p>
+ </div>
+ <button onClick={() => setSelectedMatchGroup(null)} className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl font-bold text-xs md:text-sm border border-slate-600 transition cursor-pointer">
+ العودة للأفواج ↩
+ </button>
+ </div>
+ <div className="space-y-4">
+ {matches.filter(m => m.group === selectedMatchGroup).map((m) => {
+ const isT1Red = m.team1 === DISQUALIFIED_TEAM;
+ const isT2Red = m.team2 === DISQUALIFIED_TEAM;
+ return (
+ <div key={m.id} className={`p-4 rounded-2xl flex flex-col gap-3 border transition ${isAdmin ? 'bg-emerald-950/30 border-emerald-500/40' : 'bg-slate-900/75 border-slate-800'}`}>
+ <div className="flex justify-between items-center">
+ <span className="text-[11px] font-black px-2.5 py-0.5 rounded-lg bg-slate-950 text-amber-400 border border-amber-500/30">
+ {m.round || 'دور المجموعات'}
+ </span>
+ <div className="text-[11px] font-bold flex items-center gap-2 text-slate-300">
+ <span className="bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800"><i className="fa-regular fa-calendar ml-1 text-amber-400"></i>{m.date}</span>
+ <span className="bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800"><i className="fa-regular fa-clock ml-1 text-cyan-400"></i>{m.time}</span>
+ </div>
+ </div>
+
+ {isAdmin && (
+ <div className="flex flex-wrap gap-2 p-2.5 bg-emerald-950/60 rounded-xl justify-center border border-emerald-700/40">
+ <input type="date" value={m.date} onChange={(e) => handleMatchEdit(m.id, 'date', e.target.value)} className="bg-slate-950 text-emerald-300 px-3 py-1.5 rounded-lg outline-none font-bold text-xs border border-emerald-700/60" />
+ <input type="time" value={m.time} onChange={(e) => handleMatchEdit(m.id, 'time', e.target.value)} className="bg-slate-950 text-emerald-300 px-3 py-1.5 rounded-lg outline-none font-bold text-xs border border-emerald-700/60" />
+ <select value={m.status} onChange={(e) => handleMatchEdit(m.id, 'status', e.target.value)} className="bg-slate-950 text-emerald-300 px-3 py-1.5 rounded-lg outline-none font-bold text-xs border border-emerald-700/60">
+ <option value="قريباً">قريباً</option>
+ <option value="جارية">جارية</option>
+ <option value="انتهت">انتهت</option>
+ </select>
+ </div>
+ )}
+ 
+ <div className="flex flex-col md:flex-row justify-between items-center gap-3">
+ <div className="flex items-center justify-center gap-2.5 flex-1 w-full">
+ <span className={`flex-1 text-left font-black text-sm md:text-base px-2.5 py-1 rounded-lg ${isT1Red ? 'team-red-pill' : 'text-slate-100'}`}>
+ {m.team1}
+ </span>
+ 
+ <div className="flex items-center gap-1.5 shrink-0">
+ {isAdmin && (
+ <div className="flex flex-col gap-1">
+ <button onClick={() => handleScoreChange(m.id, 'score1', 1)} className="w-7 h-6 bg-emerald-600 hover:bg-emerald-500 rounded text-white font-black text-xs">+</button>
+ <button onClick={() => handleScoreChange(m.id, 'score1', -1)} className="w-7 h-6 bg-rose-700 hover:bg-rose-600 rounded text-white font-black text-xs">-</button>
+ </div>
+ )}
+ <span className={`px-4 py-1.5 rounded-xl border bg-slate-950 font-black text-lg md:text-xl min-w-[76px] text-center ${isAdmin ? 'text-emerald-400 border-emerald-500/50' : 'text-amber-400 border-amber-500/30'}`}>
+ {m.score1} - {m.score2}
+ </span>
+ {isAdmin && (
+ <div className="flex flex-col gap-1">
+ <button onClick={() => handleScoreChange(m.id, 'score2', 1)} className="w-7 h-6 bg-emerald-600 hover:bg-emerald-500 rounded text-white font-black text-xs">+</button>
+ <button onClick={() => handleScoreChange(m.id, 'score2', -1)} className="w-7 h-6 bg-rose-700 hover:bg-rose-600 rounded text-white font-black text-xs">-</button>
+ </div>
+ )}
+ </div>
+
+ <span className={`flex-1 text-right font-black text-sm md:text-base px-2.5 py-1 rounded-lg ${isT2Red ? 'team-red-pill' : 'text-slate-100'}`}>
+ {m.team2}
+ </span>
+ </div>
+ 
+ <span className={`text-[11px] font-black px-3 py-1 rounded-full shrink-0 border ${m.status === 'انتهت' ? 'bg-rose-950/70 text-rose-300 border-rose-500/40' : (m.status === 'جارية' ? 'bg-cyan-950/70 text-cyan-300 border-cyan-500/40' : 'bg-slate-800/80 text-slate-300 border-slate-700')}`}>
+ {m.status}
+ </span>
+ </div>
+ </div>
+ );
+ })}
+ </div>
+ </div>
+ )}
+ </div>
+ )}
+
+ {/* 2. المباريات المتقدمة */}
+ {activeTab === 'knockout' && (
+ <div className="space-y-6 animate-fade-in">
+ {knockoutStages.map(stage => {
+ const stageMatches = knockoutMatches.filter(m => m.stage === stage);
+ return (
+ <div key={stage} className="glass-card p-5 md:p-6">
+ <h2 className={`text-lg md:text-xl font-black mb-4 border-b border-slate-700/60 pb-2.5 flex items-center gap-2 ${stage === 'النهائي' ? 'text-amber-400' : (isAdmin ? 'text-emerald-400' : 'text-cyan-400')}`}>
+ <i className={`fa-solid ${stage === 'النهائي' ? 'fa-crown text-amber-400' : 'fa-trophy'}`}></i>
+ <span>{stage}</span>
+ </h2>
+ <div className="space-y-3.5">
+ {stageMatches.map(m => (
+ <div key={m.id} className={`p-4 rounded-2xl flex flex-col gap-3 border ${stage === 'النهائي' ? 'bg-amber-950/20 border-amber-500/40' : (isAdmin ? 'bg-emerald-950/30 border-emerald-500/40' : 'bg-slate-900/75 border-slate-800')}`}>
+ <div className="flex justify-between items-center">
+ <span className="text-[11px] font-black px-2.5 py-0.5 rounded-lg bg-slate-950 text-amber-400 border border-slate-800">{m.label}</span>
+ <div className="text-[11px] font-bold flex items-center gap-2 text-slate-300">
+ <span className="bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800"><i className="fa-regular fa-calendar ml-1 text-amber-400"></i>{m.date}</span>
+ <span className="bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800"><i className="fa-regular fa-clock ml-1 text-cyan-400"></i>{m.time}</span>
+ </div>
+ </div>
+
+ {isAdmin && (
+ <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 p-2.5 bg-emerald-950/60 rounded-xl border border-emerald-700/40">
+ <input type="text" value={m.team1} onChange={(e) => handleKnockoutEdit(m.id, 'team1', e.target.value)} placeholder="الفريق 1" className="bg-slate-950 text-emerald-200 px-2.5 py-1.5 rounded-lg outline-none font-bold text-xs border border-emerald-700/60" />
+ <input type="text" value={m.team2} onChange={(e) => handleKnockoutEdit(m.id, 'team2', e.target.value)} placeholder="الفريق 2" className="bg-slate-950 text-emerald-200 px-2.5 py-1.5 rounded-lg outline-none font-bold text-xs border border-emerald-700/60" />
+ <input type="date" value={m.date} onChange={(e) => handleKnockoutEdit(m.id, 'date', e.target.value)} className="bg-slate-950 text-emerald-300 px-2.5 py-1.5 rounded-lg outline-none font-bold text-xs border border-emerald-700/60" />
+ <input type="time" value={m.time} onChange={(e) => handleKnockoutEdit(m.id, 'time', e.target.value)} className="bg-slate-950 text-emerald-300 px-2.5 py-1.5 rounded-lg outline-none font-bold text-xs border border-emerald-700/60" />
+ <select value={m.status} onChange={(e) => handleKnockoutEdit(m.id, 'status', e.target.value)} className="bg-slate-950 text-emerald-300 px-2.5 py-1.5 rounded-lg outline-none font-bold text-xs border border-emerald-700/60">
+ <option value="قريباً">قريباً</option>
+ <option value="جارية">جارية</option>
+ <option value="انتهت">انتهت</option>
+ </select>
+ </div>
+ )}
+
+ <div className="flex flex-col md:flex-row justify-between items-center gap-3">
+ <div className="flex items-center justify-center gap-2.5 flex-1 w-full">
+ <span className="flex-1 text-left font-black text-sm md:text-base text-slate-100">{m.team1}</span>
+ <div className="flex items-center gap-1.5 shrink-0">
+ {isAdmin && (
+ <div className="flex flex-col gap-1">
+ <button onClick={() => handleKnockoutScore(m.id, 'score1', 1)} className="w-7 h-6 bg-emerald-600 hover:bg-emerald-500 rounded text-white font-black text-xs">+</button>
+ <button onClick={() => handleKnockoutScore(m.id, 'score1', -1)} className="w-7 h-6 bg-rose-700 hover:bg-rose-600 rounded text-white font-black text-xs">-</button>
+ </div>
+ )}
+ <span className={`px-4 py-1.5 rounded-xl border bg-slate-950 font-black text-lg md:text-xl min-w-[76px] text-center ${isAdmin ? 'text-emerald-400 border-emerald-500/50' : 'text-amber-400 border-amber-500/30'}`}>
+ {m.score1} - {m.score2}
+ </span>
+ {isAdmin && (
+ <div className="flex flex-col gap-1">
+ <button onClick={() => handleKnockoutScore(m.id, 'score2', 1)} className="w-7 h-6 bg-emerald-600 hover:bg-emerald-500 rounded text-white font-black text-xs">+</button>
+ <button onClick={() => handleKnockoutScore(m.id, 'score2', -1)} className="w-7 h-6 bg-rose-700 hover:bg-rose-600 rounded text-white font-black text-xs">-</button>
+ </div>
+ )}
+ </div>
+ <span className="flex-1 text-right font-black text-sm md:text-base text-slate-100">{m.team2}</span>
+ </div>
+ <span className={`text-[11px] font-black px-3 py-1 rounded-full shrink-0 border ${m.status === 'انتهت' ? 'bg-rose-950/70 text-rose-300 border-rose-500/40' : (m.status === 'جارية' ? 'bg-cyan-950/70 text-cyan-300 border-cyan-500/40' : 'bg-slate-800/80 text-slate-300 border-slate-700')}`}>
+ {m.status}
+ </span>
+ </div>
+ </div>
+ ))}
+ </div>
+ </div>
+ );
+ })}
+ </div>
+ )}
+
+ {/* 3. جدول الترتيب التلقائي */}
+ {activeTab === 'standings' && (
+ <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 animate-fade-in">
+ {computedStandings.map((g, index) => (
+ <div key={index} className="glass-card p-5 overflow-hidden">
+ <h3 className={`font-black mb-4 text-lg border-b border-slate-700/60 pb-2.5 flex items-center gap-2 ${isAdmin ? 'text-emerald-400' : 'text-amber-400'}`}>
+ <i className="fa-solid fa-layer-group text-sm"></i>
+ <span>{g.groupName}</span>
+ </h3>
+ <div className="overflow-x-auto">
+ <table className="w-full text-right text-xs md:text-sm">
+ <thead>
+ <tr className="text-slate-400 border-b border-slate-800">
+ <th className="pb-2.5 pr-1">الفريق</th>
+ <th className="pb-2.5 text-center">ل</th>
+ <th className="pb-2.5 text-center">ف</th>
+ <th className="pb-2.5 text-center">ت</th>
+ <th className="pb-2.5 text-center">خ</th>
+ <th className="pb-2.5 text-center">+-</th>
+ <th className="pb-2.5 text-center text-amber-400">ن</th>
+ </tr>
+ </thead>
+ <tbody>
+ {g.standings.map((s, idx) => (
+ <tr key={idx} className={`border-b border-slate-800/50 transition ${s.isDisqualified ? 'team-red-row' : (idx < 2 ? 'bg-emerald-950/25' : '')}`}>
+ <td className="py-2.5 pr-2 font-bold flex items-center gap-2 whitespace-nowrap">
+ <span className={`w-5 h-5 flex justify-center items-center rounded-md text-[11px] font-black shrink-0 ${s.isDisqualified ? 'bg-red-600 text-white' : (idx < 2 ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-300')}`}>
+ {idx + 1}
+ </span>
+ <span className={s.isDisqualified ? 'text-red-200 font-black' : 'text-slate-100'}>{s.team}</span>
+ </td>
+ <td className="py-2.5 text-center font-semibold">{s.played}</td>
+ <td className="py-2.5 text-center text-emerald-400 font-semibold">{s.won}</td>
+ <td className="py-2.5 text-center text-cyan-400 font-semibold">{s.drawn}</td>
+ <td className="py-2.5 text-center text-rose-400 font-semibold">{s.lost}</td>
+ <td className="py-2.5 text-center text-slate-400 font-semibold" dir="ltr">{s.gd > 0 ? `+${s.gd}` : s.gd}</td>
+ <td className={`py-2.5 text-center font-black text-base ${s.isDisqualified ? 'text-red-400' : 'text-amber-400'}`}>{s.points}</td>
+ </tr>
+ ))}
+ </tbody>
+ </table>
+ </div>
+ </div>
+ ))}
+ </div>
+ )}
+
+ {/* 4. قوائم الفرق */}
+ {activeTab === 'players' && (
+ <div className="glass-card p-5 md:p-6 animate-fade-in">
+ <h2 className={`text-xl font-black mb-4 border-b border-slate-700/60 pb-3 ${isAdmin ? 'text-emerald-400' : 'text-amber-400'}`}>قوائم لاعبي الفرق المشاركة</h2>
+ <div className="flex gap-2.5 mb-5 overflow-x-auto pb-2 scrollbar-hide">
+ {allTeams.map(t => {
+ const isRed = t === DISQUALIFIED_TEAM;
+ const isSelected = selectedRosterTeam === t;
+ return (
+ <button
+ key={t}
+ onClick={() => setSelectedRosterTeam(t)}
+ className={`px-4 py-2.5 rounded-xl text-xs md:text-sm font-black whitespace-nowrap transition cursor-pointer border ${
+ isRed
+ ? `team-red-btn ${isSelected ? 'ring-2 ring-red-300' : 'opacity-90'}`
+ : isSelected
+ ? (isAdmin ? 'admin-btn-3d !py-2.5 !px-4' : 'btn-3d active-tab !py-2.5 !px-4')
+ : 'bg-slate-900/90 text-slate-300 border-slate-700 hover:border-amber-500/60'
+ }`}
+ >
+ {t}
+ </button>
+ );
+ })}
+ </div>
+ <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[420px] overflow-y-auto pl-1">
+ {players.filter(p => p.team === selectedRosterTeam).map((p, idx) => {
+ const isRed = selectedRosterTeam === DISQUALIFIED_TEAM;
+ return (
+ <div key={p.id} className={`p-3.5 rounded-xl flex items-center gap-3.5 border transition ${isRed ? 'team-red-row border-red-500/40' : (isAdmin ? 'bg-emerald-950/30 border-emerald-700/40' : 'bg-slate-900/70 border-slate-800')}`}>
+ <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shrink-0 ${isRed ? 'bg-red-600 text-white' : (isAdmin ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-amber-400')}`}>
+ {idx + 1}
+ </div>
+ <span className={`font-bold text-sm md:text-base ${isRed ? 'text-red-100' : 'text-slate-100'}`}>{p.name}</span>
+ </div>
+ );
+ })}
+ </div>
+ </div>
+ )}
+
+ {/* 5. الهدافين */}
+ {activeTab === 'scorers' && (
+ <div className="glass-card p-5 md:p-6 animate-fade-in">
+ <h2 className={`text-xl md:text-2xl font-black mb-5 border-b border-slate-700/60 pb-3 ${isAdmin ? 'text-emerald-400' : 'text-amber-400'}`}>ترتيب أحسن 6 هدافين</h2>
+ <div className="space-y-3.5">
+ {[...scorers].sort((a, b) => b.goals - a.goals).map((s, index) => {
+ const isRed = s.team === DISQUALIFIED_TEAM;
+ return (
+ <div key={s.id} className={`p-4 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-3 border transition ${isRed ? 'team-red-row border-red-500/40' : (isAdmin ? 'bg-emerald-950/30 border-emerald-700/40' : 'bg-slate-900/70 border-slate-800')}`}>
+ {isAdmin ? (
+ <div className="flex flex-wrap md:flex-nowrap w-full gap-2.5 items-center text-xs md:text-sm">
+ <span className="font-black text-emerald-400 w-6 text-center text-base">{index + 1}.</span>
+ <input type="text" value={s.name} onChange={(e) => handleScorerEdit(s.id, 'name', e.target.value)} className="flex-1 min-w-[140px] bg-slate-950 border border-emerald-600/60 text-emerald-200 px-3 py-2 rounded-xl outline-none font-bold" />
+ <select value={s.team} onChange={(e) => handleScorerEdit(s.id, 'team', e.target.value)} className="w-36 bg-slate-950 border border-emerald-600/60 text-emerald-200 px-3 py-2 rounded-xl outline-none font-bold">
+ {allTeams.map(t => <option key={t} value={t}>{t}</option>)}
+ </select>
+ <div className="flex items-center gap-1.5">
+ <button onClick={() => handleScorerEdit(s.id, 'goals', Math.max(0, (Number(s.goals) || 0) - 1))} className="w-8 h-9 bg-rose-700 hover:bg-rose-600 rounded-lg text-white font-black">-</button>
+ <input type="number" min="0" value={s.goals} onChange={(e) => handleScorerEdit(s.id, 'goals', Math.max(0, Number(e.target.value)))} className="w-14 bg-slate-950 border border-emerald-600/60 text-emerald-300 text-center py-2 rounded-lg outline-none font-black" />
+ <button onClick={() => handleScorerEdit(s.id, 'goals', (Number(s.goals) || 0) + 1)} className="w-8 h-9 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-white font-black">+</button>
+ </div>
+ </div>
+ ) : (
+ <div className="flex w-full justify-between items-center">
+ <div className="flex items-center gap-3.5">
+ <div className={`w-9 h-9 rounded-full flex justify-center items-center font-black text-base ${index === 0 ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-amber-400'}`}>
+ {index + 1}
+ </div>
+ <div>
+ <h3 className="font-black text-slate-100 text-base">{s.name}</h3>
+ <span className={`text-[11px] font-bold px-2 py-0.5 rounded inline-block mt-0.5 ${isRed ? 'team-red-pill' : 'bg-slate-950 text-amber-400 border border-slate-800'}`}>
+ {s.team}
+ </span>
+ </div>
+ </div>
+ <div className="bg-slate-950 px-4 py-1.5 rounded-xl text-amber-400 font-black text-lg border border-amber-500/30">
+ {s.goals} <i className="fa-solid fa-futbol text-sm mr-1"></i>
+ </div>
+ </div>
+ )}
+ </div>
+ );
+ })}
+ </div>
+ </div>
+ )}
+
+ {/* 6. البطاقات */}
+ {activeTab === 'cards' && (
+ <div className="glass-card p-5 md:p-6 animate-fade-in">
+ <h2 className={`text-xl md:text-2xl font-black mb-4 border-b border-slate-700/60 pb-3 ${isAdmin ? 'text-emerald-400' : 'text-amber-400'}`}>سجل البطاقات الملونة</h2>
+ <div className="flex gap-2.5 mb-5 overflow-x-auto pb-2 scrollbar-hide">
+ {allTeams.map(t => {
+ const isRed = t === DISQUALIFIED_TEAM;
+ const isSelected = selectedCardsTeam === t;
+ return (
+ <button
+ key={t}
+ onClick={() => setSelectedCardsTeam(t)}
+ className={`px-4 py-2.5 rounded-xl text-xs md:text-sm font-black whitespace-nowrap transition cursor-pointer border ${
+ isRed
+ ? `team-red-btn ${isSelected ? 'ring-2 ring-red-300' : 'opacity-90'}`
+ : isSelected
+ ? (isAdmin ? 'admin-btn-3d !py-2.5 !px-4' : 'btn-3d active-tab !py-2.5 !px-4')
+ : 'bg-slate-900/90 text-slate-300 border-slate-700 hover:border-amber-500/60'
+ }`}
+ >
+ {t}
+ </button>
+ );
+ })}
+ </div>
+ <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[420px] overflow-y-auto pl-1">
+ {players.filter(p => p.team === selectedCardsTeam).map((p, idx) => (
+ <div key={p.id} className={`p-3.5 rounded-xl flex items-center justify-between border ${selectedCardsTeam === DISQUALIFIED_TEAM ? 'team-red-row border-red-500/40' : (isAdmin ? 'bg-emerald-950/30 border-emerald-700/40' : 'bg-slate-900/70 border-slate-800')}`}>
+ <span className="font-bold text-sm flex-1 pl-2">{idx + 1}. {p.name}</span>
+ {isAdmin ? (
+ <div className="flex items-center gap-2">
+ <div className="flex items-center gap-1 bg-slate-950 px-1.5 py-1 rounded-lg border border-yellow-500/40">
+ <button onClick={() => handleCardChange(p.id, 'yellowCards', -1)} className="w-5 text-rose-400 font-black">-</button>
+ <span className="font-black text-yellow-400 w-4 text-center text-xs">{p.yellowCards}</span>
+ <button onClick={() => handleCardChange(p.id, 'yellowCards', 1)} className="w-5 text-emerald-400 font-black">+</button>
+ </div>
+ <div className="flex items-center gap-1 bg-slate-950 px-1.5 py-1 rounded-lg border border-red-500/40">
+ <button onClick={() => handleCardChange(p.id, 'redCards', -1)} className="w-5 text-rose-400 font-black">-</button>
+ <span className="font-black text-red-500 w-4 text-center text-xs">{p.redCards}</span>
+ <button onClick={() => handleCardChange(p.id, 'redCards', 1)} className="w-5 text-emerald-400 font-black">+</button>
+ </div>
+ </div>
+ ) : (
+ <div className="flex items-center gap-3 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800">
+ <div className="flex items-center gap-1.5">
+ <span className="w-3 h-4 bg-yellow-400 rounded-sm inline-block"></span>
+ <span className="font-black text-xs text-slate-200">{p.yellowCards}</span>
+ </div>
+ <span className="w-px h-4 bg-slate-700"></span>
+ <div className="flex items-center gap-1.5">
+ <span className="w-3 h-4 bg-red-500 rounded-sm inline-block"></span>
+ <span className="font-black text-xs text-slate-200">{p.redCards}</span>
+ </div>
+ </div>
+ )}
+ </div>
+ ))}
+ </div>
+ </div>
+ )}
+
+ {/* 7. التصويت المباشر للجماهير - أحسن لاعب */}
+ {activeTab === 'bestPlayer' && (
+ <div className="glass-card p-5 md:p-6 animate-fade-in">
+ <div className="text-center mb-6">
+ <h2 className={`text-xl md:text-2xl font-black mb-1 ${isAdmin ? 'text-emerald-400' : 'text-amber-400'}`}>التصويت المباشر للجماهير — أحسن لاعب</h2>
+ <p className="text-xs md:text-sm text-slate-400 font-semibold">إجمالي الأصوات المسجلة: <span className="text-amber-400 font-black">{totalVotes}</span> صوت</p>
+ </div>
+ <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+ {[...bestPlayers].sort((a, b) => b.votes - a.votes).map((player) => {
+ const pct = totalVotes > 0 ? Math.round((player.votes / totalVotes) * 100) : 0;
+ return (
+ <div key={player.id} className={`vote-card p-5 rounded-2xl flex flex-col items-center text-center ${isAdmin ? 'border-emerald-600/50' : ''}`}>
+ <div className={`w-16 h-16 rounded-full mb-3 flex items-center justify-center text-2xl font-black border-2 ${isAdmin ? 'bg-emerald-950 border-emerald-400 text-emerald-300' : 'bg-slate-800 border-amber-400 text-amber-300'}`}>
+ {player.name.charAt(0)}
+ </div>
+ <h3 className="font-black text-base mb-1">{player.name}</h3>
+ <span className={`text-[11px] font-bold px-3 py-0.5 rounded-full mb-3 ${player.team === DISQUALIFIED_TEAM ? 'team-red-pill' : 'bg-slate-950 text-slate-300 border border-slate-700'}`}>
+ {player.team}
+ </span>
+ <div className={`text-2xl font-black mb-1 ${isAdmin ? 'text-emerald-400' : 'text-amber-400'}`}>
+ {player.votes} <span className="text-xs text-slate-400">صوت ({pct}%)</span>
+ </div>
+ <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden mb-4 border border-slate-800">
+ <div className="h-full bg-gradient-to-l from-amber-400 to-emerald-400 transition-all duration-300" style={{ width: `${pct}%` }}></div>
+ </div>
+ 
+ <button
+ onClick={() => handleVote(player.id)}
+ disabled={hasVoted && !isAdmin}
+ className={`w-full py-2.5 text-sm rounded-xl font-black transition ${hasVoted && !isAdmin ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : (isAdmin ? 'admin-btn-3d !py-2.5' : 'btn-3d !py-2.5')}`}
+ >
+ {hasVoted && !isAdmin ? 'تم التصويت' : 'صوّت الآن'}
+ </button>
+ 
+ {isAdmin && (
+ <div className="flex gap-2 w-full mt-3">
+ <button onClick={() => { setBestPlayers(prev => prev.map(p => p.id === player.id ? { ...p, votes: p.votes + 1 } : p)); markDirty(); }} className="flex-1 bg-emerald-600 hover:bg-emerald-500 rounded-lg py-1.5 font-black text-white text-sm">+</button>
+ <button onClick={() => { setBestPlayers(prev => prev.map(p => p.id === player.id ? { ...p, votes: Math.max(0, p.votes - 1) } : p)); markDirty(); }} className="flex-1 bg-rose-700 hover:bg-rose-600 rounded-lg py-1.5 font-black text-white text-sm">-</button>
+ </div>
+ )}
+ </div>
+ );
+ })}
+ </div>
+ </div>
+ )}
+
+ {/* 8. الدردشة السحابية */}
+ {activeTab === 'chat' && (
+ <div className="glass-card p-5 md:p-6 max-w-2xl mx-auto animate-fade-in">
+ <h2 className="text-xl font-black text-cyan-400 mb-4 border-b border-slate-700/60 pb-3 flex items-center justify-between">
+ <span className="flex items-center gap-2">
+ <i className="fa-regular fa-comments"></i>
+ <span>الدردشة السحابية المباشرة</span>
+ </span>
+ <span className="text-[11px] bg-cyan-950/70 text-cyan-300 px-2.5 py-1 rounded-lg border border-cyan-500/40 font-bold">
+ {chatMessages.length} رسالة
+ </span>
+ </h2>
+ <div className="bg-slate-950/75 p-4 rounded-2xl h-72 overflow-y-auto space-y-3 mb-4 border border-slate-800">
+ {chatMessages.map(msg => (
+ <div key={msg.id} className={`p-3 rounded-xl border-r-4 ${msg.user === 'مدير الدورة' || msg.user === 'لجنة التنظيم' ? 'bg-emerald-950/40 border-emerald-500' : 'bg-slate-900/90 border-cyan-500'}`}>
+ <div className="flex justify-between items-center mb-1">
+ <span className={`font-black text-xs ${msg.user === 'مدير الدورة' || msg.user === 'لجنة التنظيم' ? 'text-emerald-400' : 'text-amber-400'}`}>{msg.user}</span>
+ <div className="flex items-center gap-2">
+ <span className="text-[10px] font-bold text-slate-500">{msg.time}</span>
+ {isAdmin && (
+ <button onClick={() => handleDeleteChatMsg(msg.id)} className="text-rose-400 hover:text-rose-300 text-xs font-black" title="حذف الرسالة">&times;</button>
+ )}
+ </div>
+ </div>
+ <p className="text-slate-200 text-sm font-semibold">{msg.text}</p>
+ </div>
+ ))}
+ </div>
+ <form onSubmit={handleSendChat} className="flex gap-2 flex-col sm:flex-row">
+ {!isAdmin && (
+ <input type="text" value={chatUser} onChange={(e) => setChatUser(e.target.value)} placeholder="الاسم (اختياري)..." className="bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm font-bold outline-none focus:border-cyan-500 w-full sm:w-1/3" />
+ )}
+ <div className="flex gap-2 flex-1">
+ <input type="text" value={newChatMessage} onChange={(e) => setNewChatMessage(e.target.value)} placeholder="اكتب رسالتك في الدردشة السحابية..." className={`flex-1 bg-slate-950 border rounded-xl px-3.5 py-2.5 text-sm font-bold outline-none ${isAdmin ? 'border-emerald-600/60 focus:border-emerald-400' : 'border-slate-700 focus:border-cyan-500'}`} required />
+ <button type="submit" className={`px-5 py-2.5 rounded-xl font-black text-sm shrink-0 ${isAdmin ? 'admin-btn-3d !py-2.5 !px-5' : 'bg-cyan-600 hover:bg-cyan-500 text-white'}`}>إرسال</button>
+ </div>
+ </form>
+ </div>
+ )}
+
+ {/* 9. الإشعارات */}
+ {activeTab === 'notifications' && (
+ <div className="glass-card p-5 md:p-6 animate-fade-in">
+ <h2 className={`text-xl md:text-2xl font-black mb-5 border-b border-slate-700/60 pb-3 flex items-center gap-2 ${isAdmin ? 'text-emerald-400' : 'text-rose-400'}`}>
+ <i className="fa-solid fa-bell"></i>
+ <span>إشعارات الدورة</span>
+ </h2>
+ 
+ {isAdmin && (
+ <div className="bg-emerald-950/30 p-4 rounded-2xl mb-5 border border-emerald-600/40">
+ <h3 className="text-emerald-400 font-black text-sm mb-3">إرسال إشعار جديد للمستخدمين</h3>
+ <form onSubmit={handleAddNotification} className="flex flex-col gap-2.5">
+ <input type="text" value={newNotificationTitle} onChange={(e) => setNewNotificationTitle(e.target.value)} placeholder="عنوان الإشعار..." className="bg-slate-950 border border-emerald-700/60 text-emerald-100 px-3.5 py-2 rounded-xl font-bold text-sm outline-none focus:border-emerald-400" required />
+ <textarea value={newNotificationBody} onChange={(e) => setNewNotificationBody(e.target.value)} placeholder="تفاصيل الإشعار..." className="bg-slate-950 border border-emerald-700/60 text-emerald-100 px-3.5 py-2 rounded-xl font-bold text-sm outline-none focus:border-emerald-400 resize-none h-20" required></textarea>
+ <button type="submit" className="admin-btn-3d !py-2.5 !px-6 self-end text-sm">إرسال الإشعار</button>
+ </form>
+ </div>
+ )}
+ 
+ <div className="space-y-3 max-h-[420px] overflow-y-auto pl-1">
+ {notifications.length > 0 ? notifications.map((notif) => (
+ <div key={notif.id} className="bg-slate-900/75 p-4 rounded-2xl border-r-4 border-rose-500 flex flex-col gap-1.5">
+ <div className="flex justify-between items-center gap-2">
+ <h3 className="font-black text-base text-slate-100">{notif.title}</h3>
+ <span className="text-[11px] bg-slate-950 px-2.5 py-0.5 rounded-lg text-slate-400 font-bold border border-slate-800 shrink-0">{notif.time}</span>
+ </div>
+ <p className="text-sm text-slate-300 font-semibold leading-relaxed">{notif.body}</p>
+ </div>
+ )) : (
+ <div className="text-center text-slate-500 py-10 font-bold">لا توجد إشعارات حالياً</div>
+ )}
+ </div>
+ </div>
+ )}
+ </div>
+
+ {/* لوحة تحكم الشريط العاجل للمدير */}
+ {isAdmin && (
+ <div className="glass-card mb-6 p-5 border-emerald-500/40 max-w-4xl mx-auto">
+ <h3 className="font-black text-emerald-400 text-sm mb-3">إدارة أخبار الشريط العاجل</h3>
+ <form onSubmit={handleAddTicker} className="flex gap-2.5 flex-col sm:flex-row mb-3">
+ <input type="text" value={newTickerMsg} onChange={(e) => setNewTickerMsg(e.target.value)} placeholder="اكتب الخبر العاجل هنا..." className="flex-1 bg-slate-950 border border-emerald-600/60 text-white px-4 py-2.5 rounded-xl font-bold text-sm outline-none focus:border-emerald-400" required />
+ <button type="submit" className="admin-btn-3d !py-2.5 !px-6 text-sm shrink-0">نشر الخبر</button>
+ </form>
+ <div className="flex flex-wrap gap-2">
+ {tickerMessages.map((msg, idx) => (
+ <span key={idx} className="bg-slate-900 text-slate-300 text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-700 flex items-center gap-2">
+ <span>{msg}</span>
+ <button onClick={() => handleDeleteTicker(idx)} className="text-rose-400 hover:text-rose-300 font-black">&times;</button>
+ </span>
+ ))}
+ </div>
+ </div>
+ )}
+
+ {/* التذييل */}
+ <div className="text-center text-[11px] text-slate-500 font-bold pb-4">
+ صناعة وبرمجة: A. Arab — جميع الحقوق محفوظة © براغلو انفو 2026
+ </div>
+
+ {/* الشريط الإخباري العاجل */}
+ <div className="ticker-glass" dir="rtl">
+ <div className="pulse-badge flex items-center gap-1.5">
+ <i className="fa-solid fa-bolt"></i>
+ <span>عاجل</span>
+ </div>
+ <div className="ticker-wrap">
+ <div className="ticker-track">
+ {tickerMessages.map((msg, idx) => (
+ <span key={idx} className="ticker-item">{msg} <span className="mx-3 text-emerald-400">•</span></span>
+ ))}
+ {tickerMessages.map((msg, idx) => (
+ <span key={`dup-${idx}`} className="ticker-item">{msg} <span className="mx-3 text-emerald-400">•</span></span>
+ ))}
+ </div>
+ </div>
+ </div>
+ </div>
+ );
+ }
+
+ ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+ </script>
+</body>
+</html>
