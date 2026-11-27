@@ -2,8 +2,17 @@
 <html lang="ar" dir="rtl">
 <head>
  <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ <meta name="theme-color" content="#030712">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="براغلو انفو">
  <title>تطبيق براغلو انفو | BERRAGHLOU DREAM CUP 2026</title>
+
+ <!-- PWA Manifest مدمج لتثبيت التطبيق على الهاتف -->
+ <link rel="manifest" id="app-manifest">
+ <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%23030712'/%3E%3Ccircle cx='96' cy='96' r='74' fill='%230f172a' stroke='%23f59e0b' stroke-width='8'/%3E%3Ctext x='96' y='112' font-family='Arial' font-weight='bold' font-size='44' fill='%2338bdf8' text-anchor='middle'%3EB.i%3C/text%3E%3C/svg%3E">
 
  <!-- Google Fonts -->
  <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,7 +57,6 @@
  margin: 0;
  }
 
- /* Glassmorphism Cards */
  .glass-card {
  background: var(--surface);
  backdrop-filter: blur(14px);
@@ -58,7 +66,6 @@
  border-radius: 1.25rem;
  }
 
- /* 3D Buttons - بارزة ثلاثية الأبعاد مع إضاءة ذهبية سفلية عند الضغط */
  .btn-3d {
  position: relative;
  background: linear-gradient(180deg, #273549 0%, #131c2e 55%, #090e1a 100%);
@@ -154,7 +161,6 @@
  transform: translateY(0);
  }
 
- /* Admin Mode 3D Emerald Buttons + إضاءة ذهبية سفلية عند الضغط */
  .admin-btn-3d {
  position: relative;
  background: linear-gradient(180deg, #10b981 0%, #059669 55%, #064e3b 100%) !important;
@@ -202,7 +208,6 @@
  inset 0 2px 2px rgba(255, 255, 255, 0.35) !important;
  }
 
- /* Red Styling for Berraghlou */
  .team-red-row {
  background: linear-gradient(90deg, rgba(153, 27, 27, 0.42) 0%, rgba(127, 29, 29, 0.25) 100%) !important;
  border-right: 4px solid #ef4444 !important;
@@ -222,7 +227,6 @@
  box-shadow: 0 5px 0 #450a0a, 0 6px 16px rgba(239, 68, 68, 0.35) !important;
  }
 
- /* Vote Card */
  .vote-card {
  background: linear-gradient(160deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.92) 100%);
  border: 1px solid rgba(245, 158, 11, 0.22);
@@ -235,7 +239,6 @@
  box-shadow: 0 14px 30px rgba(245, 158, 11, 0.2);
  }
 
- /* Neon & Gold Typography */
  .neon-text {
  font-weight: 900;
  background: linear-gradient(to left, #38bdf8, #818cf8, #38bdf8);
@@ -254,7 +257,6 @@
  filter: drop-shadow(0 3px 6px rgba(245, 158, 11, 0.4));
  }
 
- /* Seamless RTL Breaking News Ticker */
  .ticker-glass {
  position: fixed;
  bottom: 0;
@@ -319,7 +321,6 @@
  100% { transform: translateX(50%); }
  }
 
- /* Notifications Bell */
  .notification-pulse {
  animation: bell-ring 2.2s infinite;
  transform-origin: top center;
@@ -370,12 +371,34 @@
 <body>
  <div id="root" class="w-full max-w-5xl mx-auto flex flex-col items-center justify-start p-3 md:p-6"></div>
 
+ <script>
+ (function setupPWA() {
+ const svgIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23030712'/%3E%3Ccircle cx='256' cy='256' r='200' fill='%230f172a' stroke='%23f59e0b' stroke-width='20'/%3E%3Ctext x='256' y='295' font-family='Arial' font-weight='bold' font-size='120' fill='%2338bdf8' text-anchor='middle'%3EB.i%3C/text%3E%3C/svg%3E";
+ const manifestObj = {
+ name: "براغلو انفو | BERRAGHLOU DREAM CUP 2026",
+ short_name: "براغلو انفو",
+ start_url: ".",
+ display: "standalone",
+ background_color: "#030712",
+ theme_color: "#030712",
+ dir: "rtl",
+ lang: "ar",
+ icons: [
+ { src: svgIcon, sizes: "192x192", type: "image/svg+xml" },
+ { src: svgIcon, sizes: "512x512", type: "image/svg+xml" }
+ ]
+ };
+ const blob = new Blob([JSON.stringify(manifestObj)], { type: 'application/json' });
+ const manifestLink = document.getElementById('app-manifest');
+ if (manifestLink) manifestLink.setAttribute('href', URL.createObjectURL(blob));
+ })();
+ </script>
+
  <script type="module">
  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
  import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
- /* إعدادات Firebase Firestore السحابية (يمكن تعديلها مباشرة من لوحة المدير داخل التطبيق) */
  const defaultFirebaseConfig = {
  // apiKey: "YOUR_API_KEY",
  // authDomain: "YOUR_AUTH_DOMAIN",
@@ -436,9 +459,19 @@
  const [selectedMatchGroup, setSelectedMatchGroup] = React.useState(null);
  const [selectedRosterTeam, setSelectedRosterTeam] = React.useState('رابح رويلة');
  const [selectedCardsTeam, setSelectedCardsTeam] = React.useState('رابح رويلة');
+
+ // حقول تحكم المدير في قوائم الفرق وقائمة أحسن لاعب
+ const [newPlayerName, setNewPlayerName] = React.useState('');
+ const [newCandidateName, setNewCandidateName] = React.useState('');
+ const [newCandidateTeam, setNewCandidateTeam] = React.useState('رابح رويلة');
+ const [newCandidateVotes, setNewCandidateVotes] = React.useState(0);
+
+ // تثبيت التطبيق على الهاتف
+ const [deferredPrompt, setDeferredPrompt] = React.useState(null);
+ const [showInstallGuide, setShowInstallGuide] = React.useState(false);
  
  const [cloudStatus, setCloudStatus] = React.useState('جاري الاتصال بـ Firestore...');
- const [cloudMode, setCloudMode] = React.useState('connecting'); // 'firebase' | 'cloud_rest' | 'local'
+ const [cloudMode, setCloudMode] = React.useState('connecting');
  const [isSyncing, setIsSyncing] = React.useState(false);
  const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
  const [toastMsg, setToastMsg] = React.useState('');
@@ -451,6 +484,28 @@
  const showToast = (msg) => {
  setToastMsg(msg);
  setTimeout(() => setToastMsg(''), 2800);
+ };
+
+ React.useEffect(() => {
+ const handler = (e) => {
+ e.preventDefault();
+ setDeferredPrompt(e);
+ };
+ window.addEventListener('beforeinstallprompt', handler);
+ return () => window.removeEventListener('beforeinstallprompt', handler);
+ }, []);
+
+ const handleInstallClick = async () => {
+ if (deferredPrompt) {
+ deferredPrompt.prompt();
+ const { outcome } = await deferredPrompt.userChoice;
+ if (outcome === 'accepted') {
+ showToast('جاري تثبيت تطبيق براغلو انفو على هاتفك');
+ }
+ setDeferredPrompt(null);
+ } else {
+ setShowInstallGuide(true);
+ }
  };
 
  const groups = [
@@ -491,15 +546,13 @@
 
  const initLocalData = () => {
  const initM = [
- // المجموعة الأولى (6 مباريات)
  { id: 1, group: 'المجموعة الأولى', round: 'الجولة 1', team1: 'أهل الكدية', team2: 'نابولي', date: '2026-11-20', time: '14:00', score1: 7, score2: 2, status: 'انتهت' },
  { id: 2, group: 'المجموعة الأولى', round: 'الجولة 1', team1: 'سيليساو', team2: 'إيشوبار', date: '2026-11-20', time: '15:30', score1: 2, score2: 2, status: 'انتهت' },
- { id: 3, group: 'المجموعة الأولى', round: 'الجولة 2', team1: 'أهل الكدية', team2: 'سيليساو', date: '2026-11-24', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 3, group: 'المجموعة الأولى', round: 'الجولة 2', team1: 'أهل الكدية', team2: 'سيليساو', date: '2026-11-28', time: '18:30', score1: 0, score2: 0, status: 'قريباً' },
  { id: 4, group: 'المجموعة الأولى', round: 'الجولة 2', team1: 'نابولي', team2: 'إيشوبار', date: '2026-11-24', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
  { id: 5, group: 'المجموعة الأولى', round: 'الجولة 3', team1: 'أهل الكدية', team2: 'إيشوبار', date: '2026-11-28', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
  { id: 6, group: 'المجموعة الأولى', round: 'الجولة 3', team1: 'نابولي', team2: 'سيليساو', date: '2026-11-28', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
 
- // المجموعة الثانية (6 مباريات)
  { id: 7, group: 'المجموعة الثانية', round: 'الجولة 1', team1: 'رابح رويلة', team2: 'إسبانيا', date: '2026-11-21', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
  { id: 8, group: 'المجموعة الثانية', round: 'الجولة 1', team1: 'براغلو', team2: 'عليلقية', date: '2026-11-21', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
  { id: 9, group: 'المجموعة الثانية', round: 'الجولة 2', team1: 'رابح رويلة', team2: 'براغلو', date: '2026-11-25', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
@@ -507,18 +560,16 @@
  { id: 11, group: 'المجموعة الثانية', round: 'الجولة 3', team1: 'رابح رويلة', team2: 'عليلقية', date: '2026-11-29', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
  { id: 12, group: 'المجموعة الثانية', round: 'الجولة 3', team1: 'إسبانيا', team2: 'براغلو', date: '2026-11-29', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
 
- // المجموعة الثالثة (6 مباريات)
  { id: 13, group: 'المجموعة الثالثة', round: 'الجولة 1', team1: 'سيلتيك', team2: 'لمرايل', date: '2026-11-22', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
  { id: 14, group: 'المجموعة الثالثة', round: 'الجولة 1', team1: 'شبيبة تاليلت', team2: 'العزلة', date: '2026-11-22', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
- { id: 15, group: 'المجموعة الثالثة', round: 'الجولة 2', team1: 'سيلتيك', team2: 'شبيبة تاليلت', date: '2026-11-26', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 15, group: 'المجموعة الثالثة', round: 'الجولة 2', team1: 'سيلتيك', team2: 'شبيبة تاليلت', date: '2026-11-25', time: '18:30', score1: 0, score2: 0, status: 'قريباً' },
  { id: 16, group: 'المجموعة الثالثة', round: 'الجولة 2', team1: 'لمرايل', team2: 'العزلة', date: '2026-11-26', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
  { id: 17, group: 'المجموعة الثالثة', round: 'الجولة 3', team1: 'سيلتيك', team2: 'العزلة', date: '2026-11-30', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
  { id: 18, group: 'المجموعة الثالثة', round: 'الجولة 3', team1: 'لمرايل', team2: 'شبيبة تاليلت', date: '2026-11-30', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
 
- // المجموعة الرابعة (6 مباريات)
  { id: 19, group: 'المجموعة الرابعة', round: 'الجولة 1', team1: 'أف سي بلحسنات', team2: 'دباغة', date: '2026-11-23', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
  { id: 20, group: 'المجموعة الرابعة', round: 'الجولة 1', team1: 'حدادة', team2: 'الرول', date: '2026-11-23', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
- { id: 21, group: 'المجموعة الرابعة', round: 'الجولة 2', team1: 'أف سي بلحسنات', team2: 'حدادة', date: '2026-11-27', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
+ { id: 21, group: 'المجموعة الرابعة', round: 'الجولة 2', team1: 'أف سي بلحسنات', team2: 'حدادة', date: '2026-11-30', time: '18:30', score1: 0, score2: 0, status: 'قريباً' },
  { id: 22, group: 'المجموعة الرابعة', round: 'الجولة 2', team1: 'دباغة', team2: 'الرول', date: '2026-11-27', time: '15:30', score1: 0, score2: 0, status: 'قريباً' },
  { id: 23, group: 'المجموعة الرابعة', round: 'الجولة 3', team1: 'أف سي بلحسنات', team2: 'الرول', date: '2026-12-01', time: '14:00', score1: 0, score2: 0, status: 'قريباً' },
  { id: 24, group: 'المجموعة الرابعة', round: 'الجولة 3', team1: 'دباغة', team2: 'حدادة', date: '2026-12-01', time: '15:30', score1: 0, score2: 0, status: 'قريباً' }
@@ -620,7 +671,6 @@
  }
  };
 
- // الاتصال الفوري في الوقت الفعلي عبر Firebase Firestore مع احتياطي سحابي ومحلي
  React.useEffect(() => {
  let pollInterval = null;
  let unsubscribeFirestore = null;
@@ -742,7 +792,6 @@
  ...overrides
  });
 
- // الحفظ اليدوي والسريع للتعديلات في Firebase Firestore + السحابة + الذاكرة المحلية
  const handleSaveData = async () => {
  const dataToSave = buildFullSnapshot();
  localStorage.setItem('berraghlouData_v5', JSON.stringify(dataToSave));
@@ -857,6 +906,64 @@
  markDirty();
  };
 
+ const handleAddRosterPlayer = (e) => {
+ e.preventDefault();
+ if (!isAdmin || !newPlayerName.trim()) return;
+ const newPlayer = {
+ id: Date.now(),
+ name: newPlayerName.trim(),
+ team: selectedRosterTeam,
+ yellowCards: 0,
+ redCards: 0
+ };
+ setPlayers(prev => [...prev, newPlayer]);
+ setNewPlayerName('');
+ markDirty();
+ showToast(`تمت إضافة اللاعب إلى ${selectedRosterTeam}`);
+ };
+
+ const handlePlayerNameEdit = (id, newName) => {
+ if (!isAdmin) return;
+ setPlayers(prev => prev.map(p => p.id === id ? { ...p, name: newName } : p));
+ markDirty();
+ };
+
+ const handleDeletePlayer = (id) => {
+ if (!isAdmin) return;
+ setPlayers(prev => prev.filter(p => p.id !== id));
+ markDirty();
+ showToast('تم حذف اللاعب من القائمة');
+ };
+
+ const handleAddCandidate = (e) => {
+ e.preventDefault();
+ if (!isAdmin || !newCandidateName.trim()) return;
+ const candidate = {
+ id: Date.now(),
+ name: newCandidateName.trim(),
+ team: newCandidateTeam || selectedRosterTeam,
+ votes: Math.max(0, Number(newCandidateVotes) || 0)
+ };
+ setBestPlayers(prev => [...prev, candidate]);
+ setNewCandidateName('');
+ setNewCandidateVotes(0);
+ markDirty();
+ showToast('تمت إضافة لاعب إلى قائمة أحسن لاعب');
+ };
+
+ const handleCandidateEdit = (id, field, value) => {
+ if (!isAdmin) return;
+ setBestPlayers(prev => prev.map(p => p.id === id ? { ...p, [field]: field === 'votes' ? Math.max(0, Number(value) || 0) : value } : p));
+ markDirty();
+ };
+
+ const handleDeleteCandidate = (id) => {
+ if (!isAdmin) return;
+ setBestPlayers(prev => prev.filter(p => p.id !== id));
+ markDirty();
+ showToast('تم حذف اللاعب من قائمة أحسن لاعب');
+ };
+
  const handleScorerEdit = (id, field, value) => {
  setScorers(prev => prev.map(s => s.id === id ? { ...s, [field]: value } : s));
  markDirty();
@@ -967,7 +1074,6 @@
  }
  };
 
- // حساب تلقائي لجدول الترتيب لكل فوج
  const computedStandings = React.useMemo(() => {
  return groups.map(g => {
  let stats = g.teams.map(t => ({
@@ -1017,7 +1123,6 @@
  return (
  <div className={`w-full transition-all duration-500 ${isAdmin ? 'ring-2 ring-emerald-500/60 rounded-3xl p-2 md:p-3 bg-emerald-950/10' : ''}`}>
  
- {/* Toast Notification */}
  {toastMsg && (
  <div className="fixed top-5 left-1/2 -translate-x-1/2 z-[10000] bg-emerald-600 text-white font-black text-sm px-6 py-3 rounded-2xl shadow-2xl border border-emerald-300 flex items-center gap-2 animate-fade-in">
  <i className="fa-solid fa-circle-check"></i>
@@ -1025,7 +1130,6 @@
  </div>
  )}
 
- {/* زر الحفظ السريع العائم للمدير عند وجود تعديلات غير محفوظة */}
  {isAdmin && hasUnsavedChanges && (
  <button
  onClick={handleSaveData}
@@ -1055,6 +1159,14 @@
  </div>
  
  <div className="flex items-center gap-2 flex-wrap">
+ <button
+ onClick={handleInstallClick}
+ className="px-3.5 py-2 rounded-xl font-black text-xs md:text-sm transition flex items-center gap-1.5 cursor-pointer border bg-amber-950/70 hover:bg-amber-900/80 text-amber-200 border-amber-500/50"
+ >
+ <i className="fa-solid fa-mobile-screen-button text-amber-400"></i>
+ <span>تثبيت التطبيق</span>
+ </button>
+
  {isAdmin && (
  <>
  <button
@@ -1080,6 +1192,30 @@
  </button>
  </div>
  </div>
+
+ {/* نافذة دليل تثبيت التطبيق على الهاتف */}
+ {showInstallGuide && (
+ <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
+ <div className="glass-card p-6 max-w-sm w-full text-right border-amber-500/50 relative animate-fade-in">
+ <button onClick={() => setShowInstallGuide(false)} className="absolute top-3 left-4 text-3xl text-slate-400 hover:text-white leading-none">&times;</button>
+ <div className="flex items-center gap-3 mb-4">
+ <div className="w-12 h-12 rounded-2xl bg-amber-950 border border-amber-500/50 flex items-center justify-center text-2xl text-amber-400">
+ <i className="fa-solid fa-mobile-screen"></i>
+ </div>
+ <div>
+ <h2 className="text-lg font-black text-amber-400">تثبيت التطبيق على هاتفك</h2>
+ <p className="text-xs text-slate-400 font-bold">بدون الحاجة لمتجر التطبيقات</p>
+ </div>
+ </div>
+ <ol className="space-y-2.5 text-xs md:text-sm text-slate-200 font-bold mb-5 list-decimal pr-5">
+ <li>اضغط على قائمة المتصفح (<span className="text-amber-400">⋮</span> في Chrome أو <span className="text-cyan-400">مشاركة</span> في Safari).</li>
+ <li>اختر <span className="text-emerald-400">الإضافة إلى الشاشة الرئيسية</span> أو <span className="text-emerald-400">تثبيت التطبيق</span>.</li>
+ <li>سيظهر شعار <span className="text-amber-300">براغلو انفو</span> كتطبيق مستقل على هاتفك.</li>
+ </ol>
+ <button onClick={() => setShowInstallGuide(false)} className="w-full btn-3d !py-2.5 text-sm">فهمت</button>
+ </div>
+ </div>
+ )}
 
  {/* نافذة تسجيل الدخول برقم التعريف الشخصي للمدير */}
  {showLoginModal && (
@@ -1165,7 +1301,6 @@
  <span className="text-[10px] font-black text-slate-200 mt-1 tracking-wider">B.infos</span>
  </div>
  
- {/* شبكة الأزرار الموحدة 3D */}
  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 max-w-4xl mx-auto">
  <button onClick={() => { setActiveTab('matches'); setSelectedMatchGroup(null); }} className={navBtnClass('matches')}>
  <i className="fa-solid fa-calendar-days text-2xl"></i>
@@ -1425,7 +1560,13 @@
  {/* 4. قوائم الفرق */}
  {activeTab === 'players' && (
  <div className="glass-card p-5 md:p-6 animate-fade-in">
- <h2 className={`text-xl font-black mb-4 border-b border-slate-700/60 pb-3 ${isAdmin ? 'text-emerald-400' : 'text-amber-400'}`}>قوائم لاعبي الفرق المشاركة</h2>
+ <div className="flex flex-wrap justify-between items-center gap-2 mb-4 border-b border-slate-700/60 pb-3">
+ <h2 className={`text-xl font-black ${isAdmin ? 'text-emerald-400' : 'text-amber-400'}`}>قوائم لاعبي الفرق المشاركة</h2>
+ <span className="text-xs font-black px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300">
+ {selectedRosterTeam}: {players.filter(p => p.team === selectedRosterTeam).length} لاعب
+ </span>
+ </div>
+
  <div className="flex gap-2.5 mb-5 overflow-x-auto pb-2 scrollbar-hide">
  {allTeams.map(t => {
  const isRed = t === DISQUALIFIED_TEAM;
@@ -1447,15 +1588,53 @@
  );
  })}
  </div>
+
+ {isAdmin && (
+ <form onSubmit={handleAddRosterPlayer} className="bg-emerald-950/35 p-3.5 rounded-2xl mb-4 border border-emerald-600/40 flex flex-col sm:flex-row gap-2.5">
+ <input
+ type="text"
+ value={newPlayerName}
+ onChange={(e) => setNewPlayerName(e.target.value)}
+ placeholder={`إضافة لاعب جديد إلى قائمة (${selectedRosterTeam})...`}
+ className="flex-1 bg-slate-950 border border-emerald-600/60 text-emerald-100 px-3.5 py-2 rounded-xl text-sm font-bold outline-none focus:border-emerald-400"
+ />
+ <button type="submit" className="admin-btn-3d !py-2 !px-5 text-xs md:text-sm shrink-0">
+ <i className="fa-solid fa-user-plus ml-1"></i>
+ إضافة لاعب
+ </button>
+ </form>
+ )}
+
  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[420px] overflow-y-auto pl-1">
  {players.filter(p => p.team === selectedRosterTeam).map((p, idx) => {
  const isRed = selectedRosterTeam === DISQUALIFIED_TEAM;
  return (
- <div key={p.id} className={`p-3.5 rounded-xl flex items-center gap-3.5 border transition ${isRed ? 'team-red-row border-red-500/40' : (isAdmin ? 'bg-emerald-950/30 border-emerald-700/40' : 'bg-slate-900/70 border-slate-800')}`}>
+ <div key={p.id} className={`p-3.5 rounded-xl flex items-center justify-between gap-2.5 border transition ${isRed ? 'team-red-row border-red-500/40' : (isAdmin ? 'bg-emerald-950/30 border-emerald-700/40' : 'bg-slate-900/70 border-slate-800')}`}>
+ <div className="flex items-center gap-3 flex-1 min-w-0">
  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shrink-0 ${isRed ? 'bg-red-600 text-white' : (isAdmin ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-amber-400')}`}>
  {idx + 1}
  </div>
- <span className={`font-bold text-sm md:text-base ${isRed ? 'text-red-100' : 'text-slate-100'}`}>{p.name}</span>
+ {isAdmin ? (
+ <input
+ type="text"
+ value={p.name}
+ onChange={(e) => handlePlayerNameEdit(p.id, e.target.value)}
+ className="w-full bg-slate-950 border border-emerald-600/50 text-emerald-100 px-2.5 py-1.5 rounded-lg text-sm font-bold outline-none focus:border-emerald-400"
+ />
+ ) : (
+ <span className={`font-bold text-sm md:text-base truncate ${isRed ? 'text-red-100' : 'text-slate-100'}`}>{p.name}</span>
+ )}
+ </div>
+ {isAdmin && (
+ <button
+ type="button"
+ onClick={() => handleDeletePlayer(p.id)}
+ className="w-8 h-8 rounded-lg bg-rose-900/80 hover:bg-rose-700 text-rose-200 border border-rose-500/40 flex items-center justify-center shrink-0 cursor-pointer"
+ title="حذف اللاعب"
+ >
+ <i className="fa-solid fa-trash-can text-xs"></i>
+ </button>
+ )}
  </div>
  );
  })}
@@ -1578,18 +1757,84 @@
  <h2 className={`text-xl md:text-2xl font-black mb-1 ${isAdmin ? 'text-emerald-400' : 'text-amber-400'}`}>التصويت المباشر للجماهير — أحسن لاعب</h2>
  <p className="text-xs md:text-sm text-slate-400 font-semibold">إجمالي الأصوات المسجلة: <span className="text-amber-400 font-black">{totalVotes}</span> صوت</p>
  </div>
+
+ {isAdmin && (
+ <form onSubmit={handleAddCandidate} className="bg-emerald-950/35 p-4 rounded-2xl mb-6 border border-emerald-600/40 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+ <input
+ type="text"
+ value={newCandidateName}
+ onChange={(e) => setNewCandidateName(e.target.value)}
+ placeholder="اسم لاعب مرشح جديد..."
+ className="bg-slate-950 border border-emerald-600/60 text-emerald-100 px-3 py-2 rounded-xl text-xs md:text-sm font-bold outline-none focus:border-emerald-400"
+ required
+ />
+ <select
+ value={newCandidateTeam}
+ onChange={(e) => setNewCandidateTeam(e.target.value)}
+ className="bg-slate-950 border border-emerald-600/60 text-emerald-100 px-3 py-2 rounded-xl text-xs md:text-sm font-bold outline-none focus:border-emerald-400"
+ >
+ {allTeams.map(t => <option key={t} value={t}>{t}</option>)}
+ </select>
+ <input
+ type="number"
+ min="0"
+ value={newCandidateVotes}
+ onChange={(e) => setNewCandidateVotes(Math.max(0, Number(e.target.value)))}
+ placeholder="عدد الأصوات..."
+ className="bg-slate-950 border border-emerald-600/60 text-emerald-300 px-3 py-2 rounded-xl text-xs md:text-sm font-black outline-none focus:border-emerald-400"
+ />
+ <button type="submit" className="admin-btn-3d !py-2 !px-4 text-xs md:text-sm">
+ <i className="fa-solid fa-plus ml-1"></i>
+ إضافة للقائمة
+ </button>
+ </form>
+ )}
+
  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
  {[...bestPlayers].sort((a, b) => b.votes - a.votes).map((player) => {
  const pct = totalVotes > 0 ? Math.round((player.votes / totalVotes) * 100) : 0;
  return (
- <div key={player.id} className={`vote-card p-5 rounded-2xl flex flex-col items-center text-center ${isAdmin ? 'border-emerald-600/50' : ''}`}>
+ <div key={player.id} className={`vote-card p-5 rounded-2xl flex flex-col items-center text-center relative ${isAdmin ? 'border-emerald-600/50' : ''}`}>
+ {isAdmin && (
+ <button
+ type="button"
+ onClick={() => handleDeleteCandidate(player.id)}
+ className="absolute top-3 left-3 w-7 h-7 rounded-lg bg-rose-900/80 hover:bg-rose-700 text-rose-200 border border-rose-500/40 flex items-center justify-center cursor-pointer"
+ title="حذف المرشح"
+ >
+ <i className="fa-solid fa-trash-can text-xs"></i>
+ </button>
+ )}
+
  <div className={`w-16 h-16 rounded-full mb-3 flex items-center justify-center text-2xl font-black border-2 ${isAdmin ? 'bg-emerald-950 border-emerald-400 text-emerald-300' : 'bg-slate-800 border-amber-400 text-amber-300'}`}>
  {player.name.charAt(0)}
  </div>
+
+ {isAdmin ? (
+ <div className="w-full space-y-2 mb-3">
+ <input
+ type="text"
+ value={player.name}
+ onChange={(e) => handleCandidateEdit(player.id, 'name', e.target.value)}
+ className="w-full bg-slate-950 border border-emerald-600/50 text-emerald-100 px-2.5 py-1.5 rounded-lg text-xs font-black text-center outline-none focus:border-emerald-400"
+ />
+ <select
+ value={player.team}
+ onChange={(e) => handleCandidateEdit(player.id, 'team', e.target.value)}
+ className="w-full bg-slate-950 border border-emerald-600/50 text-emerald-200 px-2 py-1 rounded-lg text-xs font-bold text-center outline-none focus:border-emerald-400"
+ >
+ {allTeams.map(t => <option key={t} value={t}>{t}</option>)}
+ </select>
+ </div>
+ ) : (
+ <>
  <h3 className="font-black text-base mb-1">{player.name}</h3>
  <span className={`text-[11px] font-bold px-3 py-0.5 rounded-full mb-3 ${player.team === DISQUALIFIED_TEAM ? 'team-red-pill' : 'bg-slate-950 text-slate-300 border border-slate-700'}`}>
  {player.team}
  </span>
+ </>
+ )}
+
  <div className={`text-2xl font-black mb-1 ${isAdmin ? 'text-emerald-400' : 'text-amber-400'}`}>
  {player.votes} <span className="text-xs text-slate-400">صوت ({pct}%)</span>
  </div>
@@ -1602,13 +1847,20 @@
  disabled={hasVoted && !isAdmin}
  className={`w-full py-2.5 text-sm rounded-xl font-black transition ${hasVoted && !isAdmin ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : (isAdmin ? 'admin-btn-3d !py-2.5' : 'btn-3d !py-2.5')}`}
  >
- {hasVoted && !isAdmin ? 'تم التصويت' : 'صوّت الآن'}
+ {hasVoted && !isAdmin ? 'تم التصويت' : (isAdmin ? 'إضافة صوت (+1)' : 'صوّت الآن')}
  </button>
  
  {isAdmin && (
- <div className="flex gap-2 w-full mt-3">
- <button onClick={() => { setBestPlayers(prev => prev.map(p => p.id === player.id ? { ...p, votes: p.votes + 1 } : p)); markDirty(); }} className="flex-1 bg-emerald-600 hover:bg-emerald-500 rounded-lg py-1.5 font-black text-white text-sm">+</button>
- <button onClick={() => { setBestPlayers(prev => prev.map(p => p.id === player.id ? { ...p, votes: Math.max(0, p.votes - 1) } : p)); markDirty(); }} className="flex-1 bg-rose-700 hover:bg-rose-600 rounded-lg py-1.5 font-black text-white text-sm">-</button>
+ <div className="flex items-center gap-1.5 w-full mt-3">
+ <button onClick={() => handleCandidateEdit(player.id, 'votes', (Number(player.votes) || 0) - 1)} className="w-9 bg-rose-700 hover:bg-rose-600 rounded-lg py-1.5 font-black text-white text-sm cursor-pointer">-</button>
+ <input
+ type="number"
+ min="0"
+ value={player.votes}
+ onChange={(e) => handleCandidateEdit(player.id, 'votes', e.target.value)}
+ className="flex-1 min-w-0 bg-slate-950 border border-emerald-600/50 text-emerald-300 rounded-lg py-1.5 text-center font-black text-xs outline-none"
+ />
+ <button onClick={() => handleCandidateEdit(player.id, 'votes', (Number(player.votes) || 0) + 1)} className="w-9 bg-emerald-600 hover:bg-emerald-500 rounded-lg py-1.5 font-black text-white text-sm cursor-pointer">+</button>
  </div>
  )}
  </div>
